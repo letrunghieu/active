@@ -9,7 +9,7 @@ The helper class for Laravel 4 applications to get active class base on current 
 Add this package to your `composer.json` file and run `composer update` once.
 
 ```
-"hieu-le/php-bootstrapper": "dev-master"
+"hieu-le/active": "dev-master"
 ```
 
 Append this line to your `providers` array
