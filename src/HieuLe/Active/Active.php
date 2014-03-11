@@ -2,26 +2,26 @@
 
 namespace HieuLe\Active;
 
-use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use \Illuminate\Support\Str;
 
 /**
- * Description of Active
+ * The helper class for Laravel 4 applications to get active class base on current route
  *
- * @author TrungHieu
+ * @author Hieu Le
  */
 class Active
 {
 
     /**
      *
-     * @var \Illuminate\Routing\Route
+     * @var \Illuminate\Routing\Router
      */
-    private $_route;
+    private $_router;
 
-    public function __construct(Route $route)
+    public function __construct(Router $router)
     {
-	$this->_route = $route;
+	$this->_router = $router;
     }
 
     /**
@@ -33,7 +33,7 @@ class Active
      */
     public function pattern($patterns, $class = 'active')
     {
-	$uri = $this->_route->getUri();
+	$uri = $this->_router->current()->getUri();
 	if (!is_array($patterns))
 	    $patterns = array($patterns);
 	foreach ($patterns as $p)
@@ -53,7 +53,7 @@ class Active
      */
     public function route($names, $class = 'active')
     {
-	$routeName = $this->_route->getName();
+	$routeName = $this->_router->current()->getName();
 	if (!$routeName)
 	    return '';
 	if (!is_array($names))
@@ -72,7 +72,7 @@ class Active
      */
     public function action($actions, $class = 'active')
     {
-	$routeAction = $this->_route->getActionName();
+	$routeAction = $this->_router->current()->getActionName();
 	if (!is_array($actions))
 	    $actions = array($actions);
 	if (in_array($routeAction, $actions))
@@ -124,7 +124,7 @@ class Active
      */
     public function getController()
     {
-	$action = $this->_route->getActionName();
+	$action = $this->_router->current()->getActionName();
 	if ($action)
 	    return head(str_replace('Controller', '', Str::parseCallback($action, null)));
 	return null;
@@ -137,7 +137,7 @@ class Active
      */
     public function getMethod()
     {
-	$action = $this->_route->getActionName();
+	$action = $this->_router->current()->getActionName();
 	if ($action)
 	    return last(str_replace(array('get', 'post', 'put', 'delete', 'show'), '', Str::parseCallback($action, null)));
 	return null;
