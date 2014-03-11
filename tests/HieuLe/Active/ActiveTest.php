@@ -44,7 +44,7 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 	$this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
     }
     
-    public function testControllerMethod()
+    public function testGetControllerMethod()
     {
 	$route = Mockery::mock('\Illuminate\Routing\Route');
 	$route->shouldReceive('getActionName')->once()->andReturn('FooBarController@bar');
@@ -58,6 +58,18 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 	$route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
 	$active = new \HieuLe\Active\Active($route);
 	$this->assertEquals('Baz', $active->getMethod());
+    }
+    
+    public function testControllerMethod()
+    {
+	$route = Mockery::mock('\Illuminate\Routing\Route');
+	$route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
+	$active = new \HieuLe\Active\Active($route);
+	$this->assertEquals('', $active->controller('Foo'));
+	$this->assertEquals('active', $active->controller('FooBar'));
+	$this->assertEquals('selected', $active->controller('FooBar', 'selected'));
+	$this->assertEquals('selected', $active->controller('FooBar', 'selected', array('Foo')));
+	$this->assertEquals('', $active->controller('FooBar', 'selected', array('Foo', 'Baz')));
     }
 
 }

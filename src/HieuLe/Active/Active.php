@@ -80,6 +80,32 @@ class Active
 	return '';
     }
 
+    /**
+     * Return 'active' class if current controller match a controller name and 
+     * current method doest not belong to excluded methods. The controller name 
+     * and method name are gotten from <code>getController</code> and <code>getMethod</code>.
+     * 
+     * @param string $controller
+     * @param string $class
+     * @param array $excludedMethods
+     * @return string
+     */
+    public function controller($controller, $class = 'active', $excludedMethods = array())
+    {
+	$currentController = $this->getController();
+	if ($currentController !== $controller)
+	    return '';
+	$currentMethod = $this->getMethod();
+	if (in_array($currentMethod, $excludedMethods))
+	    return '';
+	return $class ? $class : '';
+    }
+
+    /**
+     * Get the current controller name with the suffix 'Controller' trimmed
+     * 
+     * @return string|null
+     */
     public function getController()
     {
 	$action = $this->_route->getActionName();
@@ -88,6 +114,11 @@ class Active
 	return null;
     }
 
+    /**
+     * Get the current method name with the prefix 'get', 'post', 'put', 'delete', 'show' trimmed
+     * 
+     * @return string|null
+     */
     public function getMethod()
     {
 	$action = $this->_route->getActionName();
