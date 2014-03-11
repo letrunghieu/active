@@ -43,12 +43,38 @@ class Active
 	return '';
     }
 
+    /**
+     * Return 'active' class if current route name match one of provided names
+     * 
+     * @param string|array $names
+     * @param string $class
+     * @return string
+     */
     public function route($names, $class = 'active')
     {
 	$routeName = $this->_route->getName();
+	if (!$routeName)
+	    return '';
 	if (!is_array($names))
 	    $names = array($names);
 	if (in_array($routeName, $names))
+	    return $class ? $class : 'active';
+	return '';
+    }
+
+    /**
+     * Return 'active' class if current route action match one of provided action names
+     * 
+     * @param string|array $actions
+     * @param string $class
+     * @return string
+     */
+    public function action($actions, $class = 'active')
+    {
+	$routeAction = $this->_route->getActionName();
+	if (!is_array($actions))
+	    $actions = array($actions);
+	if (in_array($routeAction, $actions))
 	    return $class ? $class : 'active';
 	return '';
     }
