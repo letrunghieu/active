@@ -43,5 +43,15 @@ class Active
 	return '';
     }
 
+    public function route($names, $class = 'active')
+    {
+	$routeName = $this->_route->getName();
+	if (!is_array($names))
+	    $names = array($names);
+	if (in_array($routeName, $names))
+	    return $class ? $class : 'active';
+	return '';
+    }
+
 }
 
