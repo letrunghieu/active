@@ -3,6 +3,7 @@
 namespace HieuLe\Active;
 
 use Illuminate\Routing\Route;
+use \Illuminate\Support\Str;
 
 /**
  * Description of Active
@@ -77,6 +78,22 @@ class Active
 	if (in_array($routeAction, $actions))
 	    return $class ? $class : 'active';
 	return '';
+    }
+
+    public function getController()
+    {
+	$action = $this->_route->getActionName();
+	if ($action)
+	    return head(str_replace('Controller', '', Str::parseCallback($action, null)));
+	return null;
+    }
+
+    public function getMethod()
+    {
+	$action = $this->_route->getActionName();
+	if ($action)
+	    return last(str_replace(array('get', 'post', 'put', 'delete', 'show'), '', Str::parseCallback($action, null)));
+	return null;
     }
 
 }
