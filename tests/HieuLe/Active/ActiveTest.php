@@ -71,5 +71,14 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 	$this->assertEquals('selected', $active->controller('FooBar', 'selected', array('Foo')));
 	$this->assertEquals('', $active->controller('FooBar', 'selected', array('Foo', 'Baz')));
     }
+    
+    public function testControllersMethod()
+    {
+	$route = Mockery::mock('\Illuminate\Routing\Route');
+	$route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
+	$active = new \HieuLe\Active\Active($route);
+	$this->assertEquals('active', $active->controllers(array('Foo', 'Bar', 'FooBar')));
+	$this->assertEquals('', $active->controllers(array('Foo', 'Bar')));
+    }
 
 }

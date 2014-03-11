@@ -39,7 +39,7 @@ class Active
 	foreach ($patterns as $p)
 	{
 	    if (str_is($p, $uri))
-		return $class ? $class : 'active';
+		return $class;
 	}
 	return '';
     }
@@ -59,7 +59,7 @@ class Active
 	if (!is_array($names))
 	    $names = array($names);
 	if (in_array($routeName, $names))
-	    return $class ? $class : 'active';
+	    return $class;
 	return '';
     }
 
@@ -76,7 +76,7 @@ class Active
 	if (!is_array($actions))
 	    $actions = array($actions);
 	if (in_array($routeAction, $actions))
-	    return $class ? $class : 'active';
+	    return $class;
 	return '';
     }
 
@@ -98,7 +98,23 @@ class Active
 	$currentMethod = $this->getMethod();
 	if (in_array($currentMethod, $excludedMethods))
 	    return '';
-	return $class ? $class : '';
+	return $class;
+    }
+
+    /**
+     * Return 'active' class if current controller name match one of provided
+     * controller names.
+     * 
+     * @param array $controllers
+     * @param string $class
+     * @return string
+     */
+    public function controllers(array $controllers, $class = 'active')
+    {
+	$currentController = $this->getController();
+	if (in_array($currentController, $controllers))
+	    return $class;
+	return '';
     }
 
     /**
