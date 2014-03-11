@@ -1,6 +1,6 @@
 {
     "name": "hieu-le/active",
-    "description": "The helper class for Laravel 4 applications to get active class base on current rout",
+    "description": "The helper class for Laravel 4 applications to get active class base on current route",
     "keywords": ["laravel", "active", "routing"],
     "license": "MIT",
     "authors": [
