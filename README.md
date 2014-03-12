@@ -18,8 +18,10 @@ Append this line to your `providers` array
 'HieuLe\Active\ActiveServiceProvider',
 ```
 
-Append this line to your 'alias' array
+Append this line to your `aliases` array
 
 ```
 'Active' => 'HieuLe\Active\Facades\Active',
 ```
+
+For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
