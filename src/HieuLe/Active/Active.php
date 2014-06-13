@@ -45,13 +45,13 @@ class Active
      */
     public function pattern($patterns, $class = 'active')
     {
-        $uri      = $this->_router->current()->getUri();
-        
+        $uri = $this->_router->current()->getUri();
+
         if (!is_array($patterns))
         {
             $patterns = array($patterns);
         }
-        
+
         foreach ($patterns as $p)
         {
             if (str_is($p, $uri))
@@ -59,7 +59,7 @@ class Active
                 return $class;
             }
         }
-        
+
         return '';
     }
 
@@ -73,23 +73,23 @@ class Active
      */
     public function route($names, $class = 'active')
     {
-        $routeName = $this->_router->current()->getName();
-        
+        $routeName = $this->_router->currentRouteName();
+
         if (!$routeName)
         {
             return '';
         }
-        
+
         if (!is_array($names))
         {
             $names = array($names);
         }
-        
+
         if (in_array($routeName, $names))
         {
             return $class;
         }
-        
+
         return '';
     }
 
@@ -103,18 +103,18 @@ class Active
      */
     public function action($actions, $class = 'active')
     {
-        $routeAction = $this->_router->current()->getActionName();
-        
+        $routeAction = $this->_router->currentRouteAction();
+
         if (!is_array($actions))
         {
             $actions = array($actions);
         }
-        
+
         if (in_array($routeAction, $actions))
         {
             return $class;
         }
-        
+
         return '';
     }
 
@@ -132,19 +132,19 @@ class Active
     public function controller($controller, $class = 'active', $excludedMethods = array())
     {
         $currentController = $this->getController();
-        
+
         if ($currentController !== $controller)
         {
             return '';
         }
-        
-        $currentMethod     = $this->getMethod();
-        
+
+        $currentMethod = $this->getMethod();
+
         if (in_array($currentMethod, $excludedMethods))
         {
             return '';
         }
-        
+
         return $class;
     }
 
@@ -159,12 +159,12 @@ class Active
     public function controllers(array $controllers, $class = 'active')
     {
         $currentController = $this->getController();
-        
+
         if (in_array($currentController, $controllers))
         {
             return $class;
         }
-        
+
         return '';
     }
 
@@ -176,14 +176,14 @@ class Active
     public function getController()
     {
         $action = $this->_router->currentRouteAction();
-        
+
         if ($action)
         {
             $extractedController = head(Str::parseCallback($action, null));
             // Trim the "Controller" word if it is the last word
             return preg_replace('/^(.+)(Controller)$/', '${1}', $extractedController);
         }
-        
+
         return null;
     }
 
@@ -194,13 +194,16 @@ class Active
      */
     public function getMethod()
     {
-        $action = $this->_router->current()->getActionName();
-        
+        $action = $this->_router->currentRouteAction();
+
         if ($action)
         {
-            return last(str_replace(array('get', 'post', 'put', 'delete', 'show'), '', Str::parseCallback($action, null)));
+            $extractedController = last(Str::parseCallback($action, null));
+            // Trim the "show", "post", "put", "delete", "get" if this is the
+            // prefix of the method name
+            return $extractedController ? preg_replace('/^(show|get|put|delete|post)(.+)$/', '${2}', $extractedController) : null;
         }
-        
+
         return null;
     }
 

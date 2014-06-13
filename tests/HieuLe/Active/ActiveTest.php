@@ -2,6 +2,7 @@
 
 class ActiveTest extends PHPUnit_Framework_TestCase
 {
+
     public function tearDown()
     {
         Mockery::close();
@@ -11,9 +12,9 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     {
 
         $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getUri')->once()->andReturn('foo/bar/baz');
+        $route->shouldReceive('getUri')->times(4)->andReturn('foo/bar/baz');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('current')->times(4)->andReturn($route);
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->pattern('foo/*'));
         $this->assertEquals('', $active->pattern('foo/'));
@@ -23,10 +24,8 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 
     public function testRouteMethod()
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getName')->once()->andReturn('foo');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteName')->times(5)->andReturn('foo');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->route('foo'));
         $this->assertEquals('selected', $active->route('foo', 'selected'));
@@ -37,23 +36,23 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 
     public function testRouteWithoutName()
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getName')->once()->andReturnNull();
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteName')->once()->andReturnNull();
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->route('foo'));
     }
 
     public function testActionMethod()
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getActionName')->once()->andReturn('fooController@bar');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteAction')->times(3)->andReturn('fooController@bar');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->action('fooController@bar'));
         $this->assertEquals('selected', $active->action(array('barController@baz', 'fooController@bar'), 'selected'));
+        $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
+
+        $router->shouldReceive('currentRouteAction')->once()->andReturn(null);
+        $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
     }
 
@@ -68,22 +67,21 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($result, $active->getController());
     }
 
-    public function testGetMethodName()
+    /**
+     * @dataProvider providerForTestGetMethodName
+     */
+    public function testGetMethodName($method, $result)
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteAction')->once()->andReturn("Foo@{$method}");
         $active = new \HieuLe\Active\Active($router);
-        $this->assertEquals('Baz', $active->getMethod());
+        $this->assertEquals($result, $active->getMethod());
     }
 
     public function testControllerMethod()
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteAction')->between(5, 10)->andReturn('FooBarController@getBaz');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->controller('Foo'));
         $this->assertEquals('active', $active->controller('FooBar'));
@@ -94,10 +92,8 @@ class ActiveTest extends PHPUnit_Framework_TestCase
 
     public function testControllersMethod()
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getActionName')->once()->andReturn('FooBarController@getBaz');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteAction')->twice()->andReturn('FooBarController@getBaz');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->controllers(array('Foo', 'Bar', 'FooBar')));
         $this->assertEquals('', $active->controllers(array('Foo', 'Bar')));
@@ -109,6 +105,20 @@ class ActiveTest extends PHPUnit_Framework_TestCase
             ['FooController', 'Foo'],
             ['SomethingControllerBazController', 'SomethingControllerBaz'],
             ['BazControllerFoo', 'BazControllerFoo'],
+        ];
+    }
+
+    public function providerForTestGetMethodName()
+    {
+        return [
+            ['showWelcome', 'Welcome'],
+            ['getFoo', 'Foo'],
+            ['postFoo', 'Foo'],
+            ['deleteBar', 'Bar'],
+            ['putBar', 'Bar'],
+            ['postFooBaz', 'FooBaz'],
+            ['deleteFooget', 'Fooget'],
+            ['doShowpost', 'doShowpost']
         ];
     }
 
