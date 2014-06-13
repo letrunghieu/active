@@ -6,14 +6,25 @@ use Illuminate\Routing\Router;
 use \Illuminate\Support\Str;
 
 /**
- * The helper class for Laravel 4 applications to get active class base on current route
- *
- * @author Hieu Le
+ * Return "active" class for the current route if needed
+ * 
+ * Check the current route to decide whether return an "active" class base on:
+ * <ul>
+ *   <li>current route URI</li>
+ *   <li>current route name</li>
+ *   <li>current action</li>
+ *   <li>curernt controller</li>
+ * </ul>
+ * 
+ * @package    HieuLe\Active
+ * @author     Hieu Le <letrunghieu.cse09@gmail.com>
+ * 
  */
 class Active
 {
 
     /**
+     * Current router
      *
      * @var \Illuminate\Routing\Router
      */
@@ -21,7 +32,7 @@ class Active
 
     public function __construct(Router $router)
     {
-	$this->_router = $router;
+        $this->_router = $router;
     }
 
     /**
@@ -29,19 +40,27 @@ class Active
      * 
      * @param string|array $patterns
      * @param string $class
+     * 
      * @return string
      */
     public function pattern($patterns, $class = 'active')
     {
-	$uri = $this->_router->current()->getUri();
-	if (!is_array($patterns))
-	    $patterns = array($patterns);
-	foreach ($patterns as $p)
-	{
-	    if (str_is($p, $uri))
-		return $class;
-	}
-	return '';
+        $uri      = $this->_router->current()->getUri();
+        
+        if (!is_array($patterns))
+        {
+            $patterns = array($patterns);
+        }
+        
+        foreach ($patterns as $p)
+        {
+            if (str_is($p, $uri))
+            {
+                return $class;
+            }
+        }
+        
+        return '';
     }
 
     /**
@@ -49,18 +68,29 @@ class Active
      * 
      * @param string|array $names
      * @param string $class
+     * 
      * @return string
      */
     public function route($names, $class = 'active')
     {
-	$routeName = $this->_router->current()->getName();
-	if (!$routeName)
-	    return '';
-	if (!is_array($names))
-	    $names = array($names);
-	if (in_array($routeName, $names))
-	    return $class;
-	return '';
+        $routeName = $this->_router->current()->getName();
+        
+        if (!$routeName)
+        {
+            return '';
+        }
+        
+        if (!is_array($names))
+        {
+            $names = array($names);
+        }
+        
+        if (in_array($routeName, $names))
+        {
+            return $class;
+        }
+        
+        return '';
     }
 
     /**
@@ -68,16 +98,24 @@ class Active
      * 
      * @param string|array $actions
      * @param string $class
+     * 
      * @return string
      */
     public function action($actions, $class = 'active')
     {
-	$routeAction = $this->_router->current()->getActionName();
-	if (!is_array($actions))
-	    $actions = array($actions);
-	if (in_array($routeAction, $actions))
-	    return $class;
-	return '';
+        $routeAction = $this->_router->current()->getActionName();
+        
+        if (!is_array($actions))
+        {
+            $actions = array($actions);
+        }
+        
+        if (in_array($routeAction, $actions))
+        {
+            return $class;
+        }
+        
+        return '';
     }
 
     /**
@@ -88,17 +126,26 @@ class Active
      * @param string $controller
      * @param string $class
      * @param array $excludedMethods
+     * 
      * @return string
      */
     public function controller($controller, $class = 'active', $excludedMethods = array())
     {
-	$currentController = $this->getController();
-	if ($currentController !== $controller)
-	    return '';
-	$currentMethod = $this->getMethod();
-	if (in_array($currentMethod, $excludedMethods))
-	    return '';
-	return $class;
+        $currentController = $this->getController();
+        
+        if ($currentController !== $controller)
+        {
+            return '';
+        }
+        
+        $currentMethod     = $this->getMethod();
+        
+        if (in_array($currentMethod, $excludedMethods))
+        {
+            return '';
+        }
+        
+        return $class;
     }
 
     /**
@@ -111,10 +158,14 @@ class Active
      */
     public function controllers(array $controllers, $class = 'active')
     {
-	$currentController = $this->getController();
-	if (in_array($currentController, $controllers))
-	    return $class;
-	return '';
+        $currentController = $this->getController();
+        
+        if (in_array($currentController, $controllers))
+        {
+            return $class;
+        }
+        
+        return '';
     }
 
     /**
@@ -124,10 +175,14 @@ class Active
      */
     public function getController()
     {
-	$action = $this->_router->current()->getActionName();
-	if ($action)
-	    return head(str_replace('Controller', '', Str::parseCallback($action, null)));
-	return null;
+        $action = $this->_router->current()->getActionName();
+        
+        if ($action)
+        {
+            return head(str_replace('Controller', '', Str::parseCallback($action, null)));
+        }
+        
+        return null;
     }
 
     /**
@@ -137,11 +192,14 @@ class Active
      */
     public function getMethod()
     {
-	$action = $this->_router->current()->getActionName();
-	if ($action)
-	    return last(str_replace(array('get', 'post', 'put', 'delete', 'show'), '', Str::parseCallback($action, null)));
-	return null;
+        $action = $this->_router->current()->getActionName();
+        
+        if ($action)
+        {
+            return last(str_replace(array('get', 'post', 'put', 'delete', 'show'), '', Str::parseCallback($action, null)));
+        }
+        
+        return null;
     }
 
 }
-
