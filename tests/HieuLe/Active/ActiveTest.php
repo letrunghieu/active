@@ -98,6 +98,17 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('active', $active->controllers(array('Foo', 'Bar', 'FooBar')));
         $this->assertEquals('', $active->controllers(array('Foo', 'Bar')));
     }
+    
+    public function testRoutePatternMethod()
+    {
+        $router = Mockery::mock('\Illuminate\Routing\Router');
+        $router->shouldReceive('currentRouteName')->times(4)->andReturn('prefix.foo.create');
+        $active = new HieuLe\Active\Active($router);
+        $this->assertEquals('active', $active->routePattern('*.foo.*'));
+        $this->assertEquals('', $active->routePattern('*.foo'));
+        $this->assertEquals('selected', $active->routePattern('*.foo.*', 'selected'));
+        $this->assertEquals('active', $active->routePattern('*.create'));
+    }
 
     public function providerForTestGetControllerMethod()
     {
@@ -107,7 +118,7 @@ class ActiveTest extends PHPUnit_Framework_TestCase
             ['BazControllerFoo', 'BazControllerFoo'],
         ];
     }
-
+    
     public function providerForTestGetMethodName()
     {
         return [
@@ -118,7 +129,8 @@ class ActiveTest extends PHPUnit_Framework_TestCase
             ['putBar', 'Bar'],
             ['postFooBaz', 'FooBaz'],
             ['deleteFooget', 'Fooget'],
-            ['doShowpost', 'doShowpost']
+            ['doShowpost', 'doShowpost'],
+            ['show', 'show']
         ];
     }
 

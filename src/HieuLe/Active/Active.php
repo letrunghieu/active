@@ -18,6 +18,7 @@ use \Illuminate\Support\Str;
  * 
  * @package    HieuLe\Active
  * @author     Hieu Le <letrunghieu.cse09@gmail.com>
+ * @version    1.2
  * 
  */
 class Active
@@ -88,6 +89,40 @@ class Active
         if (in_array($routeName, $names))
         {
             return $class;
+        }
+
+        return '';
+    }
+    
+    /**
+     * Check the current route name with one or some patterns
+     * 
+     * @param string|array $patterns
+     * @param string $class
+     * 
+     * @return string the <code>$class</code> if matched
+     * @since 1.2
+     */
+    public function routePattern($patterns, $class = 'active')
+    {
+        $routeName = $this->_router->currentRouteName();
+
+        if (!$routeName)
+        {
+            return '';
+        }
+
+        if (!is_array($patterns))
+        {
+            $patterns = array($patterns);
+        }
+
+        foreach ($patterns as $p)
+        {
+            if (str_is($p, $routeName))
+            {
+                return $class;
+            }
         }
 
         return '';
