@@ -175,11 +175,13 @@ class Active
      */
     public function getController()
     {
-        $action = $this->_router->current()->getActionName();
+        $action = $this->_router->currentRouteAction();
         
         if ($action)
         {
-            return head(str_replace('Controller', '', Str::parseCallback($action, null)));
+            $extractedController = head(Str::parseCallback($action, null));
+            // Trim the "Controller" word if it is the last word
+            return preg_replace('/^(.+)(Controller)$/', '${1}', $extractedController);
         }
         
         return null;

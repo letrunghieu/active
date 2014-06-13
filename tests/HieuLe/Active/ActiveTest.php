@@ -2,6 +2,10 @@
 
 class ActiveTest extends PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        Mockery::close();
+    }
 
     public function testPatternMethod()
     {
@@ -53,14 +57,15 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
     }
 
-    public function testGetControllerMethod()
+    /**
+     * @dataProvider providerForTestGetControllerMethod
+     */
+    public function testGetControllerMethod($controller, $result)
     {
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getActionName')->once()->andReturn('FooBarController@bar');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->once()->andReturn($route);
+        $router->shouldReceive('currentRouteAction')->once()->andReturn($controller);
         $active = new \HieuLe\Active\Active($router);
-        $this->assertEquals('FooBar', $active->getController());
+        $this->assertEquals($result, $active->getController());
     }
 
     public function testGetMethodName()
@@ -96,6 +101,15 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->controllers(array('Foo', 'Bar', 'FooBar')));
         $this->assertEquals('', $active->controllers(array('Foo', 'Bar')));
+    }
+
+    public function providerForTestGetControllerMethod()
+    {
+        return [
+            ['FooController', 'Foo'],
+            ['SomethingControllerBazController', 'SomethingControllerBaz'],
+            ['BazControllerFoo', 'BazControllerFoo'],
+        ];
     }
 
 }
