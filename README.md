@@ -3,8 +3,7 @@ Active for Laravel 4
 [![Build Status](https://travis-ci.org/letrunghieu/active.png?branch=master)](https://travis-ci.org/letrunghieu/active)
 [![Latest Stable Version](https://poser.pugx.org/hieu-le/active/v/stable.svg)](https://packagist.org/packages/hieu-le/active) [![Total Downloads](https://poser.pugx.org/hieu-le/active/downloads.svg)](https://packagist.org/packages/hieu-le/active) [![Latest Unstable Version](https://poser.pugx.org/hieu-le/active/v/unstable.svg)](https://packagist.org/packages/hieu-le/active) [![License](https://poser.pugx.org/hieu-le/active/license.svg)](https://packagist.org/packages/hieu-le/active)
 
-The helper class for Laravel 4 applications to get active class base on current route. I was inspired from [dwightwatson/active](https://github.com/dwightwatson/active).
-
+The helper class for Laravel 4 applications to get active class base on current route.
 ## Installation
 
 Add this package to your `composer.json` file and run `composer update` once.
