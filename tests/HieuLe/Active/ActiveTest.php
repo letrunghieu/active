@@ -11,10 +11,10 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     public function testPatternMethod()
     {
 
-        $route  = Mockery::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getUri')->times(4)->andReturn('foo/bar/baz');
+        $request = Mockery::mock('\Illuminate\Http\Request');
+        $request->shouldReceive('path')->times(4)->andReturn('foo/bar/baz');
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('current')->times(4)->andReturn($route);
+        $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->pattern('foo/*'));
         $this->assertEquals('', $active->pattern('foo/'));
