@@ -46,7 +46,7 @@ class Active
      */
     public function pattern($patterns, $class = 'active')
     {
-        $uri = $this->_router->current()->getUri();
+        $uri = urldecode($this->_router->getCurrentRequest()->path());
 
         if (!is_array($patterns))
         {
