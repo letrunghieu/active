@@ -18,7 +18,7 @@ use \Illuminate\Support\Str;
  * 
  * @package    HieuLe\Active
  * @author     Hieu Le <letrunghieu.cse09@gmail.com>
- * @version    1.2
+ * @version    1.2.1
  * 
  */
 class Active
