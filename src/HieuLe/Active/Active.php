@@ -18,7 +18,7 @@ use \Illuminate\Support\Str;
  * 
  * @package    HieuLe\Active
  * @author     Hieu Le <letrunghieu.cse09@gmail.com>
- * @version    1.2.1
+ * @version    1.2.2
  * 
  */
 class Active
@@ -46,7 +46,14 @@ class Active
      */
     public function pattern($patterns, $class = 'active')
     {
-        $uri = urldecode($this->_router->getCurrentRequest()->path());
+        $currentRequest = $this->_router->getCurrentRequest();
+        
+        if (!$currentRequest)
+        {
+            return '';
+        }
+        
+        $uri = urldecode($currentRequest->path());
 
         if (!is_array($patterns))
         {
