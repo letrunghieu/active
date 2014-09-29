@@ -14,9 +14,7 @@ class Active extends Facade
 
     protected static function getFacadeAccessor()
     {
-	return 'active';
+        return 'active';
     }
 
 }
-
-?>

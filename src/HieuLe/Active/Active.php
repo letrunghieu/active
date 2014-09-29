@@ -3,7 +3,7 @@
 namespace HieuLe\Active;
 
 use Illuminate\Routing\Router;
-use \Illuminate\Support\Str;
+use Illuminate\Support\Str;
 
 /**
  * Return "active" class for the current route if needed
@@ -47,12 +47,12 @@ class Active
     public function pattern($patterns, $class = 'active')
     {
         $currentRequest = $this->_router->getCurrentRequest();
-        
+
         if (!$currentRequest)
         {
             return '';
         }
-        
+
         $uri = urldecode($currentRequest->path());
 
         if (!is_array($patterns))
@@ -100,7 +100,7 @@ class Active
 
         return '';
     }
-    
+
     /**
      * Check the current route name with one or some patterns
      * 
