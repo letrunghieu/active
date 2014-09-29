@@ -29,4 +29,9 @@ Append this line to your `aliases` array
 ### Changes in version 1.2
 Support new method `Active::routePattern`. This method will check the current **route name** with an array of patterns instead of an array of route names.
 
+### Changes in version 1.3
+
+* Support Laravel 5.0
+* Use PSR-4 instead of PSR-0
+
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
