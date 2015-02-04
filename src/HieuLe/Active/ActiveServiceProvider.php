@@ -21,7 +21,7 @@ class ActiveServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	$this->package('hieu-le/active');
+        //$this->package('hieu-le/active');
     }
 
     /**
