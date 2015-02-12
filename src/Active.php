@@ -37,6 +37,30 @@ class Active
     }
 
     /**
+     * Return 'active' class if current requested URI is matched
+     * 
+     * @param string $uri
+     * @param string $class
+     * @return string
+     */
+    public function uri($uri, $class = 'active')
+    {
+        $currentRequest = $this->_router->getCurrentRequest();
+
+        if (!$currentRequest)
+        {
+            return '';
+        }
+
+        if ($currentRequest->getPathInfo() == $uri)
+        {
+            return $class;
+        }
+
+        return '';
+    }
+
+    /**
      * Return 'active' class if current route match a pattern
      * 
      * @param string|array $patterns

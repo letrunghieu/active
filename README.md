@@ -41,5 +41,6 @@ Support new method `Active::routePattern`. This method will check the current **
 
 * Support Laravel 5.0
 * Use PSR-4 instead of PSR-0
+* Support new method `Active::uri`. This method will check the current URI (**with** the leading slash `/`)
 
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
