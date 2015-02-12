@@ -15,16 +15,6 @@ class ActiveServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package('hieu-le/active');
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void

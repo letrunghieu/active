@@ -114,6 +114,7 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     {
         return [
             ['FooController', 'Foo'],
+            ['App\Http\Controllers\WelcomeController', 'App\Http\Controllers\Welcome'],
             ['SomethingControllerBazController', 'SomethingControllerBaz'],
             ['BazControllerFoo', 'BazControllerFoo'],
         ];
