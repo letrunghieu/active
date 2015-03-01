@@ -1,14 +1,14 @@
 {
-    "name": "hieu-le/active",
-    "description": "The helper class for Laravel 4 applications to get active class base on current route",
+    "name": "mattrandallbecker/active",
+    "description": "fork of hieu-le/active",
     "keywords": ["laravel", "active", "routing"],
     "license": "MIT",
 	"homepage": "http://www.hieule.info/products/active-class-helper-laravel-4/",
     "authors": [
 	{
-	    "name": "Hieu Le",
-	    "email": "letrunghieu.cse09@gmail.com",
-		"homepage": "http://www.hieule.info"
+	    "name": "matt becker",
+	    "email": "mattrandallbecker@gmail.com",
+		"homepage": ""
 	}
     ],
     "require": {
