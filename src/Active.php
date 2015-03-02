@@ -169,7 +169,8 @@ class Active
      */
     public function action($actions, $class = 'active')
     {
-        $routeAction = $this->_router->currentRouteAction();
+        $routeExploded = explode('\\',$this->_router->currentRouteAction());
+        $routeAction = end($routeExploded );
 
         if (!is_array($actions))
         {
