@@ -13,12 +13,12 @@ use Illuminate\Support\Str;
  *   <li>current route URI</li>
  *   <li>current route name</li>
  *   <li>current action</li>
- *   <li>curernt controller</li>
+ *   <li>current controller</li>
  * </ul>
  * 
  * @package    HieuLe\Active
  * @author     Hieu Le <letrunghieu.cse09@gmail.com>
- * @version    1.2.2
+ * @version    2.1.0
  * 
  */
 class Active
@@ -190,13 +190,21 @@ class Active
      * 
      * @param string|array $actions
      * @param string $class
+     * @param bool $fullClassName if set to false, only controller class name (without namespace) is included in the action string. Otherwise, namespace will be included.
      * 
      * @return string
      */
-    public function action($actions, $class = 'active')
+    public function action($actions, $class = 'active', $fullClassName = false)
     {
-        $routeExploded = explode('\\',$this->_router->currentRouteAction());
-        $routeAction = end($routeExploded );
+        if (!$fullClassName)
+        {
+            $routeExploded = explode('\\', $this->_router->currentRouteAction());
+            $routeAction = end($routeExploded );
+        }
+        else
+        {
+            $routeAction = $this->_router->currentRouteAction();
+        }
 
         if (!is_array($actions))
         {

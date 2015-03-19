@@ -66,12 +66,19 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $router->shouldReceive('currentRouteAction')->once()->andReturn(null);
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
+
+        $router->shouldReceive('currentRouteAction')->times(4)->andReturn('App\\Http\\Controllers\\fooController@bar');
+        $active = new \HieuLe\Active\Active($router);
+        $this->assertEquals('active', $active->action('fooController@bar'));
+        $this->assertEquals('', $active->action('App\\Http\\Controllers\\fooController@bar'));
+        $this->assertEquals('active', $active->action('App\\Http\\Controllers\\fooController@bar', 'active', true));
+        $this->assertEquals('', $active->action('fooController@bar', 'active', true));
     }
 
     /**
      * @dataProvider providerForTestGetControllerMethod
      */
-    public function testGetControllerMethod($controller, $result)
+    public function testGetControllerMethod($controller, $result, $fullClassName = false)
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
         $router->shouldReceive('currentRouteAction')->once()->andReturn($controller);
