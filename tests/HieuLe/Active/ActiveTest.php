@@ -8,6 +8,18 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         Mockery::close();
     }
 
+    public function testUriMethod() {
+        $request = Mockery::mock('\Illuminate\Http\Request');
+        $request->shouldReceive('getPathInfo')->times(4)->andReturn('/');
+        $router = Mockery::mock('\Illuminate\Routing\Router');
+        $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
+        $active = new \HieuLe\Active\Active($router);
+        $this->assertEquals('active', $active->uri('/'));
+        $this->assertEquals('', $active->uri('/*'));
+        $this->assertEquals('selected', $active->uri('/', 'selected'));
+        $this->assertEquals('', $active->uri('/*', 'selected'));
+    }
+
     public function testPatternMethod()
     {
 
