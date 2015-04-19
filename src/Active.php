@@ -59,6 +59,32 @@ class Active
 
         return '';
     }
+    /**
+     * Return 'active' class if current requested query string has key that matches value
+     * 
+     * @param string $key
+     * @param string $value
+     * @param string $class
+     * @return string
+     */
+    public function query($key, $value, $class = 'active')
+    {
+        $currentRequest = $this->_router->getCurrentRequest();
+        
+        $query = $currentRequest->query();
+
+        if (empty($query))
+        {
+            return '';
+        }
+
+        if (array_key_exists($key, $query) && $query[$key] == $value) 
+        {
+            return $class;
+        }
+
+        return '';
+    }
 
     /**
      * Return 'active' class if current route match a pattern
