@@ -43,4 +43,8 @@ Support new method `Active::routePattern`. This method will check the current **
 * Use PSR-4 instead of PSR-0
 * Support new method `Active::uri`. This method will check the current URI (**with** the leading slash `/`)
 
+### Changes in version 2.1/1.3
+
+* Support new method `Active::query`. This method will check whether the value of an query string parameter equals to or contains a specified value.
+
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
