@@ -62,23 +62,20 @@ class Active
     /**
      * Return 'active' class if current requested query string has key that matches value
      * 
-     * @param string $key
-     * @param string $value
-     * @param string $class
-     * @return string
+     * @param string $key the query key
+     * @param string $value the value of the query parameter 
+     * @param string $class the returned class
+     * @return string the returned class if the parameter <code>$key</code> has 
+     * the value equal to <code>$value</code> or contains the <code>$value</code>
+     * in case of an array
      */
     public function query($key, $value, $class = 'active')
     {
         $currentRequest = $this->_router->getCurrentRequest();
         
-        $query = $currentRequest->query();
+        $queryValue = $currentRequest->query($key);
 
-        if (empty($query))
-        {
-            return '';
-        }
-
-        if (array_key_exists($key, $query) && $query[$key] == $value) 
+        if (($queryValue == $value) || (is_array($queryValue) && in_array($value, $queryValue))) 
         {
             return $class;
         }
