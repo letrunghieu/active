@@ -58,6 +58,30 @@ class Active
     }
 
     /**
+     * Return 'active' class if current requested query string has key that matches value
+     * 
+     * @param string $key the query key
+     * @param string $value the value of the query parameter 
+     * @param string $class the returned class
+     * @return string the returned class if the parameter <code>$key</code> has 
+     * the value equal to <code>$value</code> or contains the <code>$value</code>
+     * in case of an array
+     */
+    public function query($key, $value, $class = 'active')
+    {
+        $currentRequest = $this->_router->getCurrentRequest();
+
+        $queryValue = $currentRequest->query($key);
+
+        if (($queryValue == $value) || (is_array($queryValue) && in_array($value, $queryValue)))
+        {
+            return $class;
+        }
+
+        return '';
+    }
+
+    /**
      * Return 'active' class if current route match a pattern
      * 
      * @param string|array $patterns
@@ -68,12 +92,12 @@ class Active
     public function pattern($patterns, $class = 'active')
     {
         $currentRequest = $this->_router->getCurrentRequest();
-        
+
         if (!$currentRequest)
         {
             return '';
         }
-        
+
         $uri = urldecode($currentRequest->path());
 
         if (!is_array($patterns))
@@ -121,7 +145,7 @@ class Active
 
         return '';
     }
-    
+
     /**
      * Check the current route name with one or some patterns
      * 

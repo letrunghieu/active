@@ -121,6 +121,29 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('selected', $active->routePattern('*.foo.*', 'selected'));
         $this->assertEquals('active', $active->routePattern('*.create'));
     }
+    
+    public function testQueryMethod()
+    {
+        $request = Mockery::mock('\Illuminate\Http\Request');
+        $request->shouldReceive('query')->times(4)->andReturnUsing(function($arg) {
+            switch ($arg)
+            {
+                case 'foo':
+                    return 'bar';
+                case 'lorems':
+                    return ['baz', 'ipsum'];
+            }
+            return null;
+        });
+        $router = Mockery::mock('\Illuminate\Routing\Router');
+        $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
+        $active = new \HieuLe\Active\Active($router);
+
+        $this->assertEquals('active', $active->query('foo', 'bar'));
+        $this->assertEquals('', $active->query('foo', 'barr'));
+        $this->assertEquals('selected', $active->query('lorems', 'baz', 'selected'));
+        $this->assertEquals('', $active->query('lorems', 'bazz', 'selected'));
+    }
 
     public function providerForTestGetControllerMethod()
     {

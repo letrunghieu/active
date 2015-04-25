@@ -27,6 +27,11 @@ Append this line to your `aliases` array
 ```
 
 ### Changes in version 1.2
-Support new method `Active::routePattern`. This method will check the current **route name** with an array of patterns instead of an array of route names.
+
+* Support new method `Active::routePattern`. This method will check the current **route name** with an array of patterns instead of an array of route names.
+
+### Changes in version 2.1/1.3
+
+* Support new method `Active::query`. This method will check whether the value of an query string parameter equals to or contains a specified value.
 
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
