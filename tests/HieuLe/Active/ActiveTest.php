@@ -72,8 +72,8 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->action('fooController@bar'));
         $this->assertEquals('', $active->action('App\\Http\\Controllers\\fooController@bar'));
-        $this->assertEquals('active', $active->action('App\\Http\\Controllers\\fooController@bar', 'active', true));
-        $this->assertEquals('', $active->action('fooController@bar', 'active', true));
+        $this->assertEquals('active', $active->action('App\\Http\\Controllers\\fooController@bar', 'active', '', true));
+        $this->assertEquals('', $active->action('fooController@bar', 'active', '', true));
     }
 
     /**
@@ -107,7 +107,7 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('active', $active->controller('FooBar'));
         $this->assertEquals('selected', $active->controller('FooBar', 'selected'));
         $this->assertEquals('selected', $active->controller('FooBar', 'selected', array('Foo')));
-        $this->assertEquals('', $active->controller('FooBar', 'selected', array('Foo', 'Baz')));
+        $this->assertEquals('', $active->controller('FooBar', 'selected', '', array('Foo', 'Baz')));
     }
 
     public function testControllersMethod()
