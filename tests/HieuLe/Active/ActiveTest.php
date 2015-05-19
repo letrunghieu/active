@@ -18,19 +18,20 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('active', $active->uri('/'));
         $this->assertEquals('', $active->uri('/*'));
         $this->assertEquals('selected', $active->uri('/', 'selected'));
-        $this->assertEquals('', $active->uri('/*', 'selected'));
+        $this->assertEquals('normal', $active->uri('/*', 'selected', 'normal'));
     }
 
     public function testPatternMethod()
     {
 
         $request = Mockery::mock('\Illuminate\Http\Request');
-        $request->shouldReceive('path')->times(4)->andReturn('foo/bar/baz');
+        $request->shouldReceive('path')->times(5)->andReturn('foo/bar/baz');
         $router  = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
+        $router->shouldReceive('getCurrentRequest')->times(5)->andReturn($request);
         $active  = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->pattern('foo/*'));
         $this->assertEquals('', $active->pattern('foo/'));
+        $this->assertEquals('normal', $active->pattern('foo/', 'active', 'normal'));
         $this->assertEquals('selected', $active->pattern('foo/*', 'selected'));
         $this->assertEquals('selected', $active->pattern(array('foo/*', '*bar/*'), 'selected'));
     }
@@ -38,42 +39,46 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     public function testRouteMethod()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteName')->times(5)->andReturn('foo');
+        $router->shouldReceive('currentRouteName')->times(6)->andReturn('foo');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->route('foo'));
         $this->assertEquals('selected', $active->route('foo', 'selected'));
         $this->assertEquals('active', $active->route(array('fooz', 'foo')));
         $this->assertEquals('', $active->route(array()));
         $this->assertEquals('', $active->route('bar'));
+        $this->assertEquals('normal', $active->route('bar', 'active', 'normal'));
     }
 
     public function testRouteWithoutName()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteName')->once()->andReturnNull();
+        $router->shouldReceive('currentRouteName')->times(2)->andReturnNull();
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->route('foo'));
+        $this->assertEquals('normal', $active->route('foo', 'active', 'normal'));
     }
 
     public function testActionMethod()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteAction')->times(3)->andReturn('fooController@bar');
+        $router->shouldReceive('currentRouteAction')->times(4)->andReturn('fooController@bar');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->action('fooController@bar'));
         $this->assertEquals('selected', $active->action(array('barController@baz', 'fooController@bar'), 'selected'));
         $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
+        $this->assertEquals('normal', $active->action(array('barController@baz', 'fooController@baz'), 'selected', false, 'normal'));
 
-        $router->shouldReceive('currentRouteAction')->once()->andReturn(null);
+        $router->shouldReceive('currentRouteAction')->times(2)->andReturn(null);
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->action(array('barController@baz', 'fooController@baz'), 'selected'));
+        $this->assertEquals('normal', $active->action(array('barController@baz', 'fooController@baz'), 'selected', false, 'normal'));
 
         $router->shouldReceive('currentRouteAction')->times(4)->andReturn('App\\Http\\Controllers\\fooController@bar');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->action('fooController@bar'));
         $this->assertEquals('', $active->action('App\\Http\\Controllers\\fooController@bar'));
-        $this->assertEquals('active', $active->action('App\\Http\\Controllers\\fooController@bar', 'active', '', true));
-        $this->assertEquals('', $active->action('fooController@bar', 'active', '', true));
+        $this->assertEquals('active', $active->action('App\\Http\\Controllers\\fooController@bar', 'active', true));
+        $this->assertEquals('normal', $active->action('fooController@bar', 'active', true, 'normal'));
     }
 
     /**
@@ -101,31 +106,34 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     public function testControllerMethod()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteAction')->between(5, 10)->andReturn('FooBarController@getBaz');
+        $router->shouldReceive('currentRouteAction')->between(6, 12)->andReturn('FooBarController@getBaz');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('', $active->controller('Foo'));
         $this->assertEquals('active', $active->controller('FooBar'));
         $this->assertEquals('selected', $active->controller('FooBar', 'selected'));
         $this->assertEquals('selected', $active->controller('FooBar', 'selected', array('Foo')));
-        $this->assertEquals('', $active->controller('FooBar', 'selected', '', array('Foo', 'Baz')));
+        $this->assertEquals('', $active->controller('FooBar', 'selected', array('Foo', 'Baz')));
+        $this->assertEquals('normal', $active->controller('FooBar', 'selected', array('Foo', 'Baz'), 'normal'));
     }
 
     public function testControllersMethod()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteAction')->twice()->andReturn('FooBarController@getBaz');
+        $router->shouldReceive('currentRouteAction')->times(3)->andReturn('FooBarController@getBaz');
         $active = new \HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->controllers(array('Foo', 'Bar', 'FooBar')));
         $this->assertEquals('', $active->controllers(array('Foo', 'Bar')));
+        $this->assertEquals('normal', $active->controllers(array('Foo', 'Bar'), 'selected', 'normal'));
     }
 
     public function testRoutePatternMethod()
     {
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('currentRouteName')->times(4)->andReturn('prefix.foo.create');
+        $router->shouldReceive('currentRouteName')->times(5)->andReturn('prefix.foo.create');
         $active = new HieuLe\Active\Active($router);
         $this->assertEquals('active', $active->routePattern('*.foo.*'));
         $this->assertEquals('', $active->routePattern('*.foo'));
+        $this->assertEquals('normal', $active->routePattern('*.foo', 'active', 'normal'));
         $this->assertEquals('selected', $active->routePattern('*.foo.*', 'selected'));
         $this->assertEquals('active', $active->routePattern('*.create'));
     }
@@ -133,7 +141,7 @@ class ActiveTest extends PHPUnit_Framework_TestCase
     public function testQueryMethod()
     {
         $request = Mockery::mock('\Illuminate\Http\Request');
-        $request->shouldReceive('query')->times(4)->andReturnUsing(function($arg) {
+        $request->shouldReceive('query')->times(6)->andReturnUsing(function($arg) {
             switch ($arg)
             {
                 case 'foo':
@@ -144,13 +152,15 @@ class ActiveTest extends PHPUnit_Framework_TestCase
             return null;
         });
         $router = Mockery::mock('\Illuminate\Routing\Router');
-        $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
+        $router->shouldReceive('getCurrentRequest')->times(6)->andReturn($request);
         $active = new \HieuLe\Active\Active($router);
 
         $this->assertEquals('active', $active->query('foo', 'bar'));
         $this->assertEquals('', $active->query('foo', 'barr'));
+        $this->assertEquals('normal', $active->query('foo', 'barr', 'active', 'normal'));
         $this->assertEquals('selected', $active->query('lorems', 'baz', 'selected'));
         $this->assertEquals('', $active->query('lorems', 'bazz', 'selected'));
+        $this->assertEquals('normal', $active->query('lorems', 'bazz', 'selected', 'normal'));
     }
 
     public function providerForTestGetControllerMethod()

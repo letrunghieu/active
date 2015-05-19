@@ -58,7 +58,7 @@ class Active
             return $activeClass;
         }
 
-        return '';
+        return $inactiveClass;
     }
     /**
      * Return 'active' class if current requested query string has key that matches value
@@ -197,7 +197,7 @@ class Active
      *
      * @return string
      */
-    public function action($actions, $activeClass = 'active', $inactiveClass = '', $fullClassName = false)
+    public function action($actions, $activeClass = 'active', $fullClassName = false, $inactiveClass = '')
     {
         if (!$fullClassName)
         {
@@ -234,7 +234,7 @@ class Active
      *
      * @return string
      */
-    public function controller($controller, $activeClass = 'active', $inactiveClass = '', $excludedMethods = array())
+    public function controller($controller, $activeClass = 'active', $excludedMethods = array(), $inactiveClass = '')
     {
         $currentController = $this->getController();
 
