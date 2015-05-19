@@ -34,4 +34,8 @@ Append this line to your `aliases` array
 
 * Support new method `Active::query`. This method will check whether the value of an query string parameter equals to or contains a specified value.
 
+### Changes in version 2.2/1.4
+
+* Support optional parameter for inactive class, thanks @lowerends
+
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
