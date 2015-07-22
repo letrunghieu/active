@@ -21,9 +21,6 @@
 		"phpunit/phpunit": "~4.0",
 		"mockery/mockery": "dev-master"
     },
-    "conflict": {
-		"watson/active": "*"
-    },
     "autoload": {
 		"psr-0": {
 			"HieuLe\\Active\\": "src/"
