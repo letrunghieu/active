@@ -134,6 +134,28 @@ class Active
     }
 
     /**
+     * Check if the current URI matches one of specific patterns (using `str_is`)
+     *
+     * @param array $patterns
+     *
+     * @return bool
+     */
+    public function checkUriPattern(array $patterns)
+    {
+        if (!$this->request) {
+            return false;
+        }
+
+        foreach ($patterns as $p) {
+            if (str_is($p, $this->uri)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if one of the following condition is true:
      * + the value of $value is `false` and the current querystring contain the key $key
      * + the value of $value is not `false` and the current value of the $key key in the querystring equals to $value
@@ -166,28 +188,6 @@ class Active
     }
 
     /**
-     * Check if the current URI matches one of specific patterns (using `str_is`)
-     *
-     * @param array $patterns
-     *
-     * @return bool
-     */
-    public function checkUriPattern(array $patterns)
-    {
-        if (!$this->request) {
-            return false;
-        }
-
-        foreach ($patterns as $p) {
-            if (str_is($p, $this->uri)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Check if the name of the current route matches one of specific values
      *
      * @param array $routeNames
@@ -207,27 +207,6 @@ class Active
         }
 
         return false;
-    }
-
-    /**
-     * Check if the parameter of the current route has the correct value
-     *
-     * @param $param
-     * @param $value
-     *
-     * @return bool
-     */
-    public function checkRouteParameter($param, $value)
-    {
-        if (!$this->route) {
-            return false;
-        }
-
-        if (!$this->route->parameter($param) == $value) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -252,6 +231,27 @@ class Active
         }
 
         return false;
+    }
+
+    /**
+     * Check if the parameter of the current route has the correct value
+     *
+     * @param $param
+     * @param $value
+     *
+     * @return bool
+     */
+    public function checkRouteParameter($param, $value)
+    {
+        if (!$this->route) {
+            return false;
+        }
+
+        if (!$this->route->parameter($param) == $value) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

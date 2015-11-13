@@ -1,32 +1,39 @@
 {
-    "name": "hieu-le/active",
-    "description": "The helper class for Laravel (4/5) applications to get active class base on current route",
-    "keywords": ["laravel", "active", "routing"],
-    "license": "MIT",
-	"homepage": "https://www.hieule.info/tag/laravel-active/",
-    "authors": [
-	{
-	    "name": "Hieu Le",
-	    "email": "letrunghieu.cse09@gmail.com",
-		"homepage": "https://www.hieule.info"
-	}
-    ],
-    "require": {
-		"php": ">=5.5.9",
-		"illuminate/http": "^5.1",
-		"illuminate/routing": "^5.1",
-		"illuminate/support": "^5.1"
+  "name": "hieu-le/active",
+  "description": "The helper class for Laravel (4/5) applications to get active class base on current route",
+  "keywords": [
+    "laravel",
+    "active",
+    "routing"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.hieule.info/tag/laravel-active/",
+  "authors": [
+    {
+      "name": "Hieu Le",
+      "email": "letrunghieu.cse09@gmail.com",
+      "homepage": "https://www.hieule.info"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "illuminate/http": "^5.1",
+    "illuminate/routing": "^5.1",
+    "illuminate/support": "^5.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "dev-master",
+    "codeclimate/php-test-reporter": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "HieuLe\\Active\\": "src/"
     },
-    "require-dev": {
-		"phpunit/phpunit": "~4.0",
-		"mockery/mockery": "dev-master",
-        "codeclimate/php-test-reporter": "dev-master"
-    },
-    "autoload": {
-		"psr-4": {
-			"HieuLe\\Active\\": "src/"
-		}
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "files" : [
+      "src/helpers.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
