@@ -177,24 +177,45 @@ class Active
     }
 
     /**
+     * Check the current route parameters to see whether the value of that parameter matches a specific value
+     *
+     * @param string $param
+     * @param mixed  $value
+     * @param string $activeClass
+     * @param string $inactiveClass
+     *
+     * @return string
+     *
+     * @since 3.0.0
+     */
+    public function routeParameter($param, $value, $activeClass = 'active', $inactiveClass = '')
+    {
+        $route = $this->_router->getCurrentRoute();
+
+        if (!$route) {
+            return $inactiveClass;
+        }
+
+        if (!$route->parameter($param) == $value) {
+            return $inactiveClass;
+        }
+
+        return $activeClass;
+
+    }
+
+    /**
      * Return 'active' class if current route action match one of provided action names
      *
      * @param string|array $actions
      * @param string       $activeClass
      * @param string       $inactiveClass
-     * @param bool         $fullClassName if set to false, only controller class name (without namespace) is included
-     *                                    in the action string. Otherwise, namespace will be included.
      *
      * @return string
      */
-    public function action($actions, $activeClass = 'active', $fullClassName = false, $inactiveClass = '')
+    public function action($actions, $activeClass = 'active', $inactiveClass = '')
     {
-        if (!$fullClassName) {
-            $routeExploded = explode('\\', $this->_router->currentRouteAction());
-            $routeAction = end($routeExploded);
-        } else {
-            $routeAction = $this->_router->currentRouteAction();
-        }
+        $routeAction = $this->_router->currentRouteAction();
 
         if (!is_array($actions)) {
             $actions = [$actions];
@@ -237,45 +258,6 @@ class Active
     }
 
     /**
-     * Get the current controller name with the suffix 'Controller' trimmed
-     *
-     * @return string|null
-     */
-    public function getController()
-    {
-        $action = $this->_router->currentRouteAction();
-
-        if ($action) {
-            $extractedController = head(Str::parseCallback($action, null));
-
-            // Trim the "Controller" word if it is the last word
-            return preg_replace('/^(.+)(Controller)$/', '${1}', $extractedController);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the current method name with the prefix 'get', 'post', 'put', 'delete', 'show' trimmed
-     *
-     * @return string|null
-     */
-    public function getMethod()
-    {
-        $action = $this->_router->currentRouteAction();
-
-        if ($action) {
-            $extractedController = last(Str::parseCallback($action, null));
-            // Trim the "show", "post", "put", "delete", "get" if this is the
-            // prefix of the method name
-            return $extractedController ? preg_replace('/^(show|get|put|delete|post)(.+)$/', '${2}',
-                $extractedController) : null;
-        }
-
-        return null;
-    }
-
-    /**
      * Return 'active' class if current controller name match one of provided
      * controller names.
      *
@@ -294,6 +276,38 @@ class Active
         }
 
         return $inactiveClass;
+    }
+
+    /**
+     * Get the current controller class
+     *
+     * @return string|null
+     */
+    public function getController()
+    {
+        $action = $this->_router->currentRouteAction();
+
+        if ($action) {
+            return head(Str::parseCallback($action, null));
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the current controller method
+     *
+     * @return string|null
+     */
+    public function getMethod()
+    {
+        $action = $this->_router->currentRouteAction();
+
+        if ($action) {
+            return last(Str::parseCallback($action, null));
+        }
+
+        return null;
     }
 
 }
