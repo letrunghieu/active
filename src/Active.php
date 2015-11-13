@@ -92,242 +92,206 @@ class Active
         $this->$route = $route;
         $this->action = $route->getActionName();
 
-        if ($this->action != 'Closure') {
-            $actionSegments = Str::parseCallback($this->action);
-            $this->controller = head($actionSegments);
-            $this->method = last($actionSegments);
-        } else {
-            $this->controller = null;
-            $this->method = null;
+        $actionSegments = Str::parseCallback($this->action, null);
+        $this->controller = head($actionSegments);
+        $this->method = last($actionSegments);
+    }
+
+    /**
+     * Get the active class if the condition is not falsy
+     *
+     * @param        $condition
+     * @param string $activeClass
+     * @param string $inactiveClass
+     *
+     * @return string
+     */
+    public function getClassIf($condition, $activeClass = 'active', $inactiveClass = '')
+    {
+        return $condition ? $activeClass : $inactiveClass;
+    }
+
+    /**
+     * Check if the URI of the current request matches one of the specific URIs
+     *
+     * @param array $uris
+     *
+     * @return bool
+     */
+    public function checkUri(array $uris)
+    {
+        if (!$this->request) {
+            return false;
         }
+
+        foreach ($uris as $uri) {
+            if ($this->uri == $uri) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Return the active class if the current URI matches a specific value
-     *
-     * @param        $uri
-     * @param string $activeClass
-     * @param string $inactiveClass
-     *
-     * @return string
-     */
-    public function ifUri($uri, $activeClass = 'active', $inactiveClass = '')
-    {
-        return $this->checkUri([$uri]) ? $activeClass : $inactiveClass;
-    }
-
-    /**
-     * Return the active class if the current URI matches one of many specific values
-     *
-     * @param  array $uris
-     * @param string $activeClass
-     * @param string $inactiveClass
-     *
-     * @return string
-     */
-    public function ifUriIn(array $uris, $activeClass = 'active', $inactiveClass = '')
-    {
-        return $this->checkUri($uris) ? $activeClass : $inactiveClass;
-    }
-
-    /**
-     * Return 'active' class if current requested querystring has key that matches value.
-     *
-     * There are 3 cases that is considered as a matching:
+     * Check if one of the following condition is true:
      * + the value of $value is `false` and the current querystring contain the key $key
      * + the value of $value is not `false` and the current value of the $key key in the querystring equals to $value
      * + the value of $value is not `false` and the current value of the $key key in the querystring is an array that
      * contains the $value
      *
+     * @param string $key
+     * @param mixed  $value
      *
-     * @param string $key         the query key
-     * @param string $value       the value of the query parameter
-     * @param string $activeClass the returned class
-     * @param string $inactiveClass
-     *
-     * @return string
+     * @return bool
      */
-    public function ifQuery($key, $value, $activeClass = 'active', $inactiveClass = '')
+    public function checkQuery($key, $value)
     {
-        return $this->checkQuery($key, $value) ? $activeClass : $inactiveClass;
+        if (!$this->request) {
+            return false;
+        }
+
+        $queryValue = $this->request->query($key);
+
+        // if the `key` exists in the query string with the correct value
+        // OR it exists with any value
+        // OR its value is an array that contains the specific value
+        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array($value,
+                    $queryValue))
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Return 'active' class if current route match a pattern
+     * Check if the current URI matches one of specific patterns (using `str_is`)
      *
-     * @param string $pattern
-     * @param string $activeClass
-     * @param string $inactiveClass
+     * @param array $patterns
      *
-     * @return string
+     * @return bool
      */
-    public function ifUriPattern($pattern, $activeClass = 'active', $inactiveClass = '')
+    public function checkUriPattern(array $patterns)
     {
-        return $this->checkUriPattern([$pattern]) ? $activeClass : $inactiveClass;
+        if (!$this->request) {
+            return false;
+        }
+
+        foreach ($patterns as $p) {
+            if (str_is($p, $this->uri)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Return 'active' class if current route match one of specific patterns
+     * Check if the name of the current route matches one of specific values
      *
-     * @param array  $patterns
-     * @param string $activeClass
-     * @param string $inactiveClass
+     * @param array $routeNames
      *
-     * @return string
+     * @return bool
      */
-    public function ifUriPatternIn(array $patterns, $activeClass = 'active', $inactiveClass = '')
+    public function checkRoute(array $routeNames)
     {
-        return $this->checkUriPattern($patterns) ? $activeClass : $inactiveClass;
+        if (!$this->route) {
+            return false;
+        }
+
+        $routeName = $this->route->getName();
+
+        if (in_array($routeName, $routeNames)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Return 'active' class if current route name match one of provided names
+     * Check if the parameter of the current route has the correct value
      *
-     * @param string|array $names
-     * @param string       $activeClass
-     * @param string       $inactiveClass
+     * @param $param
+     * @param $value
      *
-     * @return string
+     * @return bool
      */
-    public function route($names, $activeClass = 'active', $inactiveClass = '')
+    public function checkRouteParameter($param, $value)
     {
-        $routeName = $this->_router->currentRouteName();
-
-        if (!$routeName) {
-            return $inactiveClass;
+        if (!$this->route) {
+            return false;
         }
 
-        if (!is_array($names)) {
-            $names = [$names];
+        if (!$this->route->parameter($param) == $value) {
+            return false;
         }
 
-        if (in_array($routeName, $names)) {
-            return $activeClass;
-        }
-
-        return $inactiveClass;
+        return true;
     }
 
     /**
      * Check the current route name with one or some patterns
      *
-     * @param string|array $patterns
-     * @param string       $activeClass
-     * @param string       $inactiveClass
+     * @param array $patterns
      *
-     * @return string the <code>$activeClass</code> if matched
-     * @since 1.2
+     * @return bool
      */
-    public function routePattern($patterns, $activeClass = 'active', $inactiveClass = '')
+    public function checkRoutePattern(array $patterns)
     {
-        $routeName = $this->_router->currentRouteName();
-
-        if (!$routeName) {
-            return $inactiveClass;
+        if (!$this->route) {
+            return false;
         }
 
-        if (!is_array($patterns)) {
-            $patterns = [$patterns];
-        }
+        $routeName = $this->route->getName();
 
         foreach ($patterns as $p) {
             if (str_is($p, $routeName)) {
-                return $activeClass;
+                return true;
             }
         }
 
-        return $inactiveClass;
-    }
-
-    /**
-     * Check the current route parameters to see whether the value of that parameter matches a specific value
-     *
-     * @param string $param
-     * @param mixed  $value
-     * @param string $activeClass
-     * @param string $inactiveClass
-     *
-     * @return string
-     *
-     * @since 3.0.0
-     */
-    public function routeParameter($param, $value, $activeClass = 'active', $inactiveClass = '')
-    {
-        $route = $this->_router->getCurrentRoute();
-
-        if (!$route) {
-            return $inactiveClass;
-        }
-
-        if (!$route->parameter($param) == $value) {
-            return $inactiveClass;
-        }
-
-        return $activeClass;
-
+        return false;
     }
 
     /**
      * Return 'active' class if current route action match one of provided action names
      *
-     * @param string|array $actions
-     * @param string       $activeClass
-     * @param string       $inactiveClass
+     * @param array $actions
      *
-     * @return string
+     * @return bool
      */
-    public function action($actions, $activeClass = 'active', $inactiveClass = '')
+    public function checkAction(array $actions)
     {
-        $routeAction = $this->_router->currentRouteAction();
-
-        if (!is_array($actions)) {
-            $actions = [$actions];
+        if (!$this->action) {
+            return false;
         }
 
-        if (in_array($routeAction, $actions)) {
-            return $activeClass;
+        if (in_array($this->action, $actions)) {
+            return true;
         }
 
-        return $inactiveClass;
+        return false;
     }
 
     /**
-     * Return 'active' class if current controller match a controller name and
-     * current method doest not belong to excluded methods. The controller name
-     * and method name are gotten from <code>getController</code> and <code>getMethod</code>.
+     * Check if the current controller class matches one of specific values
      *
-     * @param string $controller
-     * @param string $activeClass
-     * @param string $inactiveClass
-     * @param array  $excludedMethods
+     * @param array $controllers
      *
-     * @return string
+     * @return bool
      */
-    public function controller($controller, $activeClass = 'active', $excludedMethods = [], $inactiveClass = '')
+    public function checkController(array $controllers)
     {
-        $currentController = $this->getController();
-
-        if ($currentController !== $controller) {
-            return $inactiveClass;
+        if (!$this->controller) {
+            return false;
         }
 
-        $currentMethod = $this->getMethod();
-
-        if (in_array($currentMethod, $excludedMethods)) {
-            return $inactiveClass;
+        if (in_array($this->controller, $controllers)) {
+            return true;
         }
 
-        return $activeClass;
-    }
-
-    /**
-     * Get the current controller class
-     *
-     * @return string
-     */
-    public function getController()
-    {
-        return $this->controller ?: "";
+        return false;
     }
 
     /**
@@ -351,101 +315,13 @@ class Active
     }
 
     /**
-     * Return 'active' class if current controller name match one of provided
-     * controller names.
-     *
-     * @param array  $controllers
-     * @param string $activeClass
-     * @param string $inactiveClass
+     * Get the current controller class
      *
      * @return string
      */
-    public function controllers(array $controllers, $activeClass = 'active', $inactiveClass = '')
+    public function getController()
     {
-        $currentController = $this->getController();
-
-        if (in_array($currentController, $controllers)) {
-            return $activeClass;
-        }
-
-        return $inactiveClass;
+        return $this->controller ?: "";
     }
-
-    /**
-     * Check if the current URI matches one of specific patterns (using `str_is`)
-     *
-     * @param array $patterns
-     *
-     * @return bool
-     */
-    protected function checkUriPattern(array $patterns)
-    {
-        if (!$this->request) {
-            throw new \RuntimeException('There is no instance of [' . Request::class . '] class.');
-        }
-
-        foreach ($patterns as $p) {
-            if (str_is($p, $this->uri)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if one of the following condition is true:
-     * + the value of $value is `false` and the current querystring contain the key $key
-     * + the value of $value is not `false` and the current value of the $key key in the querystring equals to $value
-     * + the value of $value is not `false` and the current value of the $key key in the querystring is an array that
-     * contains the $value
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return bool
-     */
-    protected function checkQuery($key, $value)
-    {
-        if (!$this->request) {
-            throw new \RuntimeException('There is no instance of [' . Request::class . '] class.');
-        }
-
-        $queryValue = $this->request->query($key);
-
-        // if the `key` exists in the query string with the correct value
-        // OR it exists with any value
-        // OR its value is an array that contains the specific value
-        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array($value,
-                    $queryValue))
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if the URI of the current request matches one of the specific URIs
-     *
-     * @param array $uris
-     *
-     * @return bool
-     */
-    protected function checkUri(array $uris)
-    {
-        if (!$this->request) {
-            throw new \RuntimeException('There is no instance of [' . Request::class . '] class.');
-        }
-
-        foreach ($uris as $uri) {
-            if ($this->uri == $uri) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
 }
