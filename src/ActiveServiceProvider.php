@@ -21,8 +21,16 @@ class ActiveServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['active'] = $this->app->share(function ($app) {
-            return new Active($app['router']);
+        $this->app->singleton('active', function ($app) {
+
+            $instance = new Active($app['router']->current());
+
+            // Update the instances each time a request is resolved and a route is matched
+            $app['router']->matched(function ($route, $request) use ($instance) {
+                $instance->updateInstances($route, $request);
+            });
+
+            return $instance;
         });
     }
 
