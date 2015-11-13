@@ -15,10 +15,10 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $router  = Mockery::mock('\Illuminate\Routing\Router');
         $router->shouldReceive('getCurrentRequest')->times(4)->andReturn($request);
         $active  = new \HieuLe\Active\Active($router);
-        $this->assertEquals('active', $active->uri('/'));
-        $this->assertEquals('', $active->uri('/*'));
-        $this->assertEquals('selected', $active->uri('/', 'selected'));
-        $this->assertEquals('normal', $active->uri('/*', 'selected', 'normal'));
+        $this->assertEquals('active', $active->checkUri('/'));
+        $this->assertEquals('', $active->checkUri('/*'));
+        $this->assertEquals('selected', $active->checkUri('/', 'selected'));
+        $this->assertEquals('normal', $active->checkUri('/*', 'selected', 'normal'));
     }
 
     public function testPatternMethod()
@@ -155,12 +155,12 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $router->shouldReceive('getCurrentRequest')->times(6)->andReturn($request);
         $active = new \HieuLe\Active\Active($router);
 
-        $this->assertEquals('active', $active->query('foo', 'bar'));
-        $this->assertEquals('', $active->query('foo', 'barr'));
-        $this->assertEquals('normal', $active->query('foo', 'barr', 'active', 'normal'));
-        $this->assertEquals('selected', $active->query('lorems', 'baz', 'selected'));
-        $this->assertEquals('', $active->query('lorems', 'bazz', 'selected'));
-        $this->assertEquals('normal', $active->query('lorems', 'bazz', 'selected', 'normal'));
+        $this->assertEquals('active', $active->checkQuery('foo', 'bar'));
+        $this->assertEquals('', $active->checkQuery('foo', 'barr'));
+        $this->assertEquals('normal', $active->checkQuery('foo', 'barr', 'active', 'normal'));
+        $this->assertEquals('selected', $active->checkQuery('lorems', 'baz', 'selected'));
+        $this->assertEquals('', $active->checkQuery('lorems', 'bazz', 'selected'));
+        $this->assertEquals('normal', $active->checkQuery('lorems', 'bazz', 'selected', 'normal'));
     }
 
     public function providerForTestGetControllerMethod()
