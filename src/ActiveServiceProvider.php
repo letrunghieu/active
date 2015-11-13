@@ -21,8 +21,7 @@ class ActiveServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['active'] = $this->app->share(function($app)
-        {
+        $this->app['active'] = $this->app->share(function ($app) {
             return new Active($app['router']);
         });
     }
@@ -34,7 +33,7 @@ class ActiveServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('active');
+        return ['active'];
     }
 
 }
