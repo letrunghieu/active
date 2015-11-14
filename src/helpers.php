@@ -10,7 +10,7 @@ if (!function_exists('active_class')) {
      *
      * @return string
      */
-    function active_class($condition, $activeClass, $inactiveClass)
+    function active_class($condition, $activeClass = 'active', $inactiveClass = '')
     {
         return app('active')->getClassIf($condition, $activeClass, $inactiveClass);
     }

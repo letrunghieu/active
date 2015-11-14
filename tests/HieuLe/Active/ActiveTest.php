@@ -44,9 +44,14 @@ class ActiveTest extends TestCase
         $this->assertSame('not-checked', $active->getClassIf(false, 'selected', 'not-checked'));
     }
 
-    public function testGetCorrectAction(Request $request)
-    {
+//    public function testGetCorrectAction(Request $request)
+//    {
+//
+//    }
 
+    public function testAliasAndHelperFunctions() {
+        $this->assertSame('active', \Active::getClassIf(true));
+        $this->assertSame('active', active_class(true));
     }
 
     protected function getPackageProviders($app)
