@@ -72,10 +72,9 @@ class Active
      *
      * @param Request $request current request instance
      */
-    public function __construct(Request $request)
+    public function __construct($request)
     {
-        $this->request = $request;
-        $this->uri = urldecode($request->path());
+        $this->updateInstances(null, $request);
     }
 
     /**
@@ -84,17 +83,21 @@ class Active
      * @param Route   $route
      * @param Request $request
      */
-    public function updateInstances(Route $route, Request $request)
+    public function updateInstances($route, $request)
     {
         $this->request = $request;
-        $this->uri = urldecode($request->path());
+        if ($request) {
+            $this->uri = urldecode($request->path());
+        }
 
-        $this->$route = $route;
-        $this->action = $route->getActionName();
+        $this->route = $route;
+        if ($route) {
+            $this->action = $route->getActionName();
 
-        $actionSegments = Str::parseCallback($this->action, null);
-        $this->controller = head($actionSegments);
-        $this->method = last($actionSegments);
+            $actionSegments = Str::parseCallback($this->action, null);
+            $this->controller = head($actionSegments);
+            $this->method = last($actionSegments);
+        }
     }
 
     /**
