@@ -251,15 +251,15 @@ class ActiveTest extends TestCase
     public function provideGetMethodTestData()
     {
         return [
-            'action is a controller method'                          => [
+            'method is a controller method'                          => [
                 Request::create('/foo/bar'),
                 'indexMethod',
             ],
-            'action is a controller method and the route has params' => [
+            'method is a controller method and the route has params' => [
                 Request::create('/foo/bar/1/view'),
                 'viewMethod',
             ],
-            'action is a closure'                                    => [
+            'method is a closure'                                    => [
                 Request::create('/home'),
                 '',
             ],
@@ -269,11 +269,11 @@ class ActiveTest extends TestCase
     public function provideGetControllerTestData()
     {
         return [
-            'action is a controller method' => [
+            'controller is a controller method' => [
                 Request::create('/foo/bar'),
                 'Namespace\Controller',
             ],
-            'action is a closure'           => [
+            'controller is a closure'           => [
                 Request::create('/home'),
                 'Closure',
             ],
@@ -283,17 +283,17 @@ class ActiveTest extends TestCase
     public function provideCheckActionTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted actions'  => [
                 Request::create('/foo/bar'),
                 ['Namespace\Controller@indexMethod'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted actions' => [
                 Request::create('/foo/bar'),
                 ['Namespace\Controller@viewMethod', 'Namespace\Controller@indexMethod'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no action'                   => [
                 Request::create('/foo/bar'),
                 ['Namespace\Controller@viewMethod', 'Namespace\Controller@deleteMethod'],
                 false,
@@ -304,17 +304,17 @@ class ActiveTest extends TestCase
     public function provideCheckControllerTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted controllers'  => [
                 Request::create('/foo/bar'),
                 ['Namespace\Controller'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted controllers' => [
                 Request::create('/foo/bar'),
                 ['Namespace\Child\Controller', 'Namespace\Controller'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no controller'                   => [
                 Request::create('/foo/bar'),
                 ['Controller', 'Namespace\Child\Controller'],
                 false,
@@ -325,17 +325,17 @@ class ActiveTest extends TestCase
     public function provideCheckRouteTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted route names'  => [
                 Request::create('/foo/bar'),
                 ['foo.bar'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted route names' => [
                 Request::create('/foo/bar'),
                 ['foo.bar.view', 'foo.bar'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no route name'                   => [
                 Request::create('/foo/bar'),
                 ['foo.bar.view', 'foo.bar.delete'],
                 false,
@@ -370,17 +370,17 @@ class ActiveTest extends TestCase
     public function provideCheckRoutePatternTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted route patterns'  => [
                 Request::create('/foo/bar'),
                 ['foo.*'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted route patterns' => [
                 Request::create('/foo/bar'),
                 ['bar.*', 'foo.*'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no route pattern'                   => [
                 Request::create('/foo/bar'),
                 ['bar.*', 'baz.*'],
                 false,
@@ -391,17 +391,17 @@ class ActiveTest extends TestCase
     public function provideCheckUriTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted uri'  => [
                 Request::create('/foo/bar'),
                 ['foo/bar'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted uri' => [
                 Request::create('/foo/bar'),
                 ['/foo/bar/view', 'foo/bar'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no uri'                  => [
                 Request::create('/foo/bar'),
                 ['/foo/bar', '/foo/bar/delete'],
                 false,
@@ -460,17 +460,17 @@ class ActiveTest extends TestCase
     public function provideCheckUriPatternTestData()
     {
         return [
-            'match the first inputted item'  => [
+            'match the first inputted uri patterns'  => [
                 Request::create('/foo/bar'),
                 ['foo/*'],
                 true,
             ],
-            'match the second inputted item' => [
+            'match the second inputted uri patterns' => [
                 Request::create('/foo/bar'),
                 ['bar/*', 'foo/*'],
                 true,
             ],
-            'match nothing'                  => [
+            'match no uri pattern'                   => [
                 Request::create('/foo/bar'),
                 ['bar/*', 'baz/*'],
                 false,
