@@ -1,7 +1,11 @@
 <?php
+
+namespace HieuLe\ActiveTest;
+
 use HieuLe\Active\Active;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 
 class ActiveTest extends TestCase
 {
@@ -10,13 +14,16 @@ class ActiveTest extends TestCase
     {
         parent::setUp();
 
-        app('router')->get('/foo/bar', ['as' => 'foo.bar', 'Namespace\Controller@indexMethod']);
-        app('router')->get('/foo/bar/{id}/view', ['as' => 'foo.bar.view', 'Namespace\Controller@viewMethod']);
-        app('router')->get('/home', [
-            'as'   => 'home',
-            'uses' => function () {
-            },
-        ]);
+        app('router')->group(['middleware' => ['dump']], function () {
+            app('router')->get('/foo/bar', ['as' => 'foo.bar', 'uses' => 'Namespace\Controller@indexMethod']);
+            app('router')->get('/foo/bar/{id}/view',
+                ['as' => 'foo.bar.view', 'uses' => 'Namespace\Controller@viewMethod']);
+            app('router')->get('/home', [
+                'as'   => 'home',
+                'uses' => function () {
+                },
+            ]);
+        });
     }
 
     public function testReturnCorrectValueWhenNotInitiated()
@@ -44,14 +51,39 @@ class ActiveTest extends TestCase
         $this->assertSame('not-checked', $active->getClassIf(false, 'selected', 'not-checked'));
     }
 
-//    public function testGetCorrectAction(Request $request)
-//    {
-//
-//    }
+    /**
+     * @param Request $request
+     * @param         $action
+     *
+     * @dataProvider provideGetActionTestData
+     */
+    public function testGetCorrectAction(Request $request, $action)
+    {
+        app(HttpKernelContract::class)->handle($request);
 
-    public function testAliasAndHelperFunctions() {
+        $this->assertSame($action, \Active::getAction());
+        $this->assertSame($action, app('active')->getAction());
+        $this->assertSame($action, current_action());
+    }
+
+    public function testAliasAndHelperFunctions()
+    {
         $this->assertSame('active', \Active::getClassIf(true));
         $this->assertSame('active', active_class(true));
+    }
+
+    public function provideGetActionTestData()
+    {
+        return [
+            'action is a controller method' => [
+                Request::create('/foo/bar'),
+                'Namespace\Controller@indexMethod',
+            ],
+            'action is a closure'           => [
+                Request::create('/home'),
+                'Closure',
+            ],
+        ];
     }
 
     protected function getPackageProviders($app)
@@ -66,5 +98,10 @@ class ActiveTest extends TestCase
         return [
             'Active' => \HieuLe\Active\Facades\Active::class,
         ];
+    }
+
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Http\Kernel', Http\Kernel::class);
     }
 }
