@@ -164,6 +164,56 @@ class ActiveTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('normal', $active->query('lorems', 'bazz', 'selected', 'normal'));
     }
 
+    public function testRouteParameter()
+    {
+        $route = Mockery::mock(\Illuminate\Routing\Route::class);
+        $route->shouldReceive('getName')->andReturn('foo');
+        $route->shouldReceive('parameter')->andReturnUsing(function ($name) {
+            switch ($name) {
+                case 'id':
+                    return 1;
+                case 'bar':
+                    return 'lorem';
+                default:
+                    return null;
+            }
+        });
+
+        $router = Mockery::mock('\Illuminate\Routing\Router');
+        $router->shouldReceive('current')->andReturn($route);
+
+        $active = new HieuLe\Active\Active($router);
+
+        $this->assertSame('', $active->routeParam('bar', []));
+        $this->assertSame('active', $active->routeParam('foo', []));
+        $this->assertSame('active', $active->routeParam('foo', [
+            'id' => 1,
+        ]));
+        $this->assertSame('active', $active->routeParam('foo', [
+            'id' => 1,
+            'bar' => 'lorem',
+        ]));
+        $this->assertSame('', $active->routeParam('foo', [
+            'id' => 1,
+            'bar' => 'lorem',
+            'baz' => 'ipsum'
+        ]));
+        $this->assertSame('', $active->routeParam('foo', [
+            'id' => 2,
+            'bar' => 'lorem',
+        ]));
+    }
+
+    public function testRouteParameterWithEmptyRoute()
+    {
+        $router = Mockery::mock('\Illuminate\Routing\Router');
+        $router->shouldReceive('current')->andReturn(null);
+
+        $active = new HieuLe\Active\Active($router);
+
+        $this->assertSame('', $active->routeParam('foo', []));
+    }
+
     public function providerForTestGetControllerMethod()
     {
         return [

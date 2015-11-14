@@ -295,4 +295,41 @@ class Active
         return $inactiveClass;
     }
 
+    /**
+     * Return 'active' class if the current route name matches a specific value, route parameters with keys defined in
+     * the `$params` has the correct value.
+     *
+     * The `$params` is an associative array, the key is name of the route parameter, the item is the desired value of
+     * that parameter.
+     *
+     * @param string $routeName
+     * @param array  $params
+     * @param string $activeClass
+     * @param string $inactiveClass
+     *
+     * @return string
+     *
+     * @since 2.3.0
+     */
+    public function routeParam($routeName, array $params, $activeClass = 'active', $inactiveClass = '')
+    {
+        $route = $this->_router->current();
+
+        if (!$route) {
+            return $inactiveClass;
+        }
+
+        if ($route->getName() != $routeName) {
+            return $inactiveClass;
+        }
+
+        foreach ($params as $key => $value) {
+            if ($route->parameter($key) != $value) {
+                return $inactiveClass;
+            }
+        }
+
+        return $activeClass;
+    }
+
 }
