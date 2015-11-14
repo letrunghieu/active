@@ -57,6 +57,6 @@ Support new method `Active::routePattern`. This method will check the current **
 
 ### Changes in version 2.3
 
-* Support new method `Active::routePattern`. This method check the current route name and route parameters with some specific values.
+* Support new method `Active::routeParam`. This method check the current route name and route parameters with some specific values.
 
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
