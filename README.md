@@ -1,4 +1,4 @@
-Active for Laravel 4/5
+Active for Laravel
 ======
 [![Build Status](https://travis-ci.org/letrunghieu/active.png?branch=master)](https://travis-ci.org/letrunghieu/active)
 [![Latest Stable Version](https://poser.pugx.org/hieu-le/active/v/stable.svg)](https://packagist.org/packages/hieu-le/active)
@@ -7,52 +7,31 @@ Active for Laravel 4/5
 [![Total Downloads](https://poser.pugx.org/hieu-le/active/downloads.svg)](https://packagist.org/packages/hieu-le/active)
 [![License](https://poser.pugx.org/hieu-le/active/license.svg)](https://packagist.org/packages/hieu-le/active)
 
-The helper class for Laravel 4/5 applications to get active class base on current route.
+The helper class for Laravel applications (both L4 and L5) to get active class base on current url.
+
+This README file is written for the new `3.x` version of this package, which is compatible with the Laravel 5 only.
+
+  * If you are using Laravel 4, see the [`1.x` versions](https://github.com/letrunghieu/active/tree/support/1.x).
+  * If you are using Laravel 5 with the legacy `2.x` version of this package, you can give a try with the `3.x` version (whose API is changed totally) or continue with the [`2.x` version](https://github.com/letrunghieu/active/tree/support/2.x).
+
 ## Installation
 
 Add this package to your `composer.json` file and run `composer update` once.
 
-For Laravel 5
-
 ```
-"hieu-le/active": "~2.0"
+"hieu-le/active": "^3.0"
 ```
-
-or for Laravel 4
-
-```
-"hieu-le/active": "~1.0"
-```
-
-If you use this package in Laravel, the most suitable version will be selected base on the version of Laravel package.
 
 Append this line to your `providers` array in `config/app.php`
 
 ```php
-'HieuLe\Active\ActiveServiceProvider',
+HieuLe\Active\ActiveServiceProvider::class,
 ```
 
 Append this line to your `aliases` array in `config/app.php`
 
 ```php
-'Active' => 'HieuLe\Active\Facades\Active',
+'Active' => HieuLe\Active\Facades\Active::class,
 ```
-
-### Changes in version 1.2
-Support new method `Active::routePattern`. This method will check the current **route name** with an array of patterns instead of an array of route names.
-
-### Changes in version 2.0
-
-* Support Laravel 5.0
-* Use PSR-4 instead of PSR-0
-* Support new method `Active::uri`. This method will check the current URI (**with** the leading slash `/`)
-
-### Changes in version 2.1/1.3
-
-* Support new method `Active::query`. This method will check whether the value of an query string parameter equals to or contains a specified value.
-
-### Changes in version 2.2/1.4
-
-* Support optional parameter for inactive class, thanks @lowerends
 
 For more details about usage see: [this page](http://www.hieule.info/products/active-class-helper-laravel-4/)
