@@ -38,7 +38,7 @@ if (!function_exists('if_uri_pattern')) {
      *
      * @return bool
      */
-    function if_uri_patterns(array $patterns)
+    function if_uri_pattern(array $patterns)
     {
         return app('active')->checkUriPattern($patterns);
     }

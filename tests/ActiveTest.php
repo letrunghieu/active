@@ -207,7 +207,7 @@ class ActiveTest extends TestCase
 
         $this->assertSame($result, \Active::checkUriPattern($uri));
         $this->assertSame($result, app('active')->checkUriPattern($uri));
-        $this->assertSame($result, if_uri_patterns($uri));
+        $this->assertSame($result, if_uri_pattern($uri));
     }
 
     /**
