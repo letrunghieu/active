@@ -14,6 +14,15 @@ class ActiveServiceProvider extends ServiceProvider
      */
     protected $defer = false;
 
+    public function boot()
+    {
+        // Update the instances each time a request is resolved and a route is matched
+        $instance = app('active');
+        app('router')->matched(function ($route, $request) use ($instance) {
+            $instance->updateInstances($route, $request);
+        });
+    }
+
     /**
      * Register the service provider.
      *
@@ -23,12 +32,7 @@ class ActiveServiceProvider extends ServiceProvider
     {
         $this->app->singleton('active', function ($app) {
 
-            $instance = new Active($app['router']->current());
-
-            // Update the instances each time a request is resolved and a route is matched
-            $app['router']->matched(function ($route, $request) use ($instance) {
-                $instance->updateInstances($route, $request);
-            });
+            $instance = new Active($app['router']->getCurrentRequest());
 
             return $instance;
         });

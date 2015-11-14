@@ -244,17 +244,13 @@ class Active
      *
      * @return bool
      */
-    public function checkRouteParameter($param, $value)
+    public function checkRouteParam($param, $value)
     {
         if (!$this->route) {
             return false;
         }
 
-        if (!$this->route->parameter($param) == $value) {
-            return false;
-        }
-
-        return true;
+        return $this->route->parameter($param) == $value;
     }
 
     /**

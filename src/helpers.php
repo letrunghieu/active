@@ -102,7 +102,7 @@ if (!function_exists('if_route_param')) {
      */
     function if_route_param($param, $value)
     {
-        return app('active')->checkRouteParameter($param, $value);
+        return app('active')->checkRouteParam($param, $value);
     }
 }
 
