@@ -12,7 +12,7 @@
 	}
     ],
     "require": {
-		"php": ">=5.4.0",
+		"php": ">=5.5.9",
 		"illuminate/http": "~5.0",
 		"illuminate/routing": "~5.0",
 		"illuminate/support": "~5.0"
