@@ -23,6 +23,8 @@ class ActiveTest extends TestCase
                 'uses' => function () {
                 },
             ]);
+            app('router')->get('/', function () {
+            });
         });
     }
 
@@ -340,6 +342,11 @@ class ActiveTest extends TestCase
                 ['foo.bar.view', 'foo.bar.delete'],
                 false,
             ],
+            'route with no name'                    => [
+                Request::create('/'),
+                ['foo.bar.view', null],
+                true,
+            ],
         ];
     }
 
@@ -385,6 +392,11 @@ class ActiveTest extends TestCase
                 ['bar.*', 'baz.*'],
                 false,
             ],
+            'route with no name'                       => [
+                Request::create('/'),
+                ['foo.*', null],
+                true,
+            ],
         ];
     }
 
@@ -405,6 +417,11 @@ class ActiveTest extends TestCase
                 Request::create('/foo/bar'),
                 ['/foo/bar', '/foo/bar/delete'],
                 false,
+            ],
+            'root route'                    => [
+                Request::create('/'),
+                ['/'],
+                true,
             ],
         ];
     }
