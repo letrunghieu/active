@@ -18,8 +18,8 @@ class ActiveServiceProvider extends ServiceProvider
     {
         // Update the instances each time a request is resolved and a route is matched
         $instance = app('active');
-        app('router')->matched(function ($route, $request) use ($instance) {
-            $instance->updateInstances($route, $request);
+        app('router')->matched(function ($routeMatched) use ($instance) {
+            $instance->updateInstances($routeMatched->route, $routeMatched->request);
         });
     }
 
