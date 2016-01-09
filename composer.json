@@ -17,9 +17,7 @@
   ],
   "require": {
     "php": ">=5.5.9",
-    "illuminate/http": "^5.1",
-    "illuminate/routing": "^5.1",
-    "illuminate/support": "^5.1",
+    "laravel/framework": "^5.0",
     "orchestra/testbench": "^3.1"
   },
   "require-dev": {
@@ -32,7 +30,7 @@
       "HieuLe\\Active\\": "src/",
       "HieuLe\\ActiveTest\\": "tests/"
     },
-    "files" : [
+    "files": [
       "src/helpers.php"
     ]
   },
