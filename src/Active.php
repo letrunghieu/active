@@ -182,7 +182,7 @@ class Active
         // OR it exists with any value
         // OR its value is an array that contains the specific value
         if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array($value,
-                    $queryValue))
+                    $queryValue) || (in_array($value, explode(",", $queryValue))))
         ) {
             return true;
         }
