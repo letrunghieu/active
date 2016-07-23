@@ -102,12 +102,12 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param array   $actions
+     * @param         $actions
      * @param         $result
      *
      * @dataProvider provideCheckActionTestData
      */
-    public function testCheckCurrentAction(Request $request, array $actions, $result)
+    public function testCheckCurrentAction(Request $request, $actions, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -118,12 +118,12 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param array   $controllers
+     * @param         $controllers
      * @param         $result
      *
      * @dataProvider provideCheckControllerTestData
      */
-    public function testCheckCurrentController(Request $request, array $controllers, $result)
+    public function testCheckCurrentController(Request $request, $controllers, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -134,12 +134,12 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param array   $routes
+     * @param         $routes
      * @param         $result
      *
      * @dataProvider provideCheckRouteTestData
      */
-    public function testCheckCurrentRoute(Request $request, array $routes, $result)
+    public function testCheckCurrentRoute(Request $request, $routes, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -150,12 +150,12 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param array   $routes
+     * @param         $routes
      * @param         $result
      *
      * @dataProvider provideCheckRoutePatternTestData
      */
-    public function testCheckCurrentRoutePattern(Request $request, array $routes, $result)
+    public function testCheckCurrentRoutePattern(Request $request, $routes, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -199,12 +199,12 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param array   $uri
+     * @param         $uri
      * @param         $result
      *
      * @dataProvider provideCheckUriPatternTestData
      */
-    public function testCheckCurrentUriPattern(Request $request, array $uri, $result)
+    public function testCheckCurrentUriPattern(Request $request, $uri, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -288,7 +288,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted actions'  => [
                 Request::create('/foo/bar'),
-                ['\HieuLe\ActiveTest\Http\DumpController@indexMethod'],
+                '\HieuLe\ActiveTest\Http\DumpController@indexMethod',
                 true,
             ],
             'match the second inputted actions' => [
@@ -315,7 +315,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted controllers'  => [
                 Request::create('/foo/bar'),
-                ['\HieuLe\ActiveTest\Http\DumpController'],
+                '\HieuLe\ActiveTest\Http\DumpController',
                 true,
             ],
             'match the second inputted controllers' => [
@@ -336,7 +336,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted route names'  => [
                 Request::create('/foo/bar'),
-                ['foo.bar'],
+                'foo.bar',
                 true,
             ],
             'match the second inputted route names' => [
@@ -386,7 +386,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted route patterns'  => [
                 Request::create('/foo/bar'),
-                ['foo.*'],
+                'foo.*',
                 true,
             ],
             'match the second inputted route patterns' => [
@@ -486,7 +486,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted uri patterns'  => [
                 Request::create('/foo/bar'),
-                ['foo/*'],
+                'foo/*',
                 true,
             ],
             'match the second inputted uri patterns' => [

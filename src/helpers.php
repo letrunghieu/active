@@ -34,11 +34,11 @@ if (!function_exists('if_uri_pattern')) {
     /**
      * Check if the current URI matches one of specific patterns (using `str_is`)
      *
-     * @param array $patterns
+     * @param array|string $patterns
      *
      * @return bool
      */
-    function if_uri_pattern(array $patterns)
+    function if_uri_pattern($patterns)
     {
         return app('active')->checkUriPattern($patterns);
     }
@@ -67,11 +67,11 @@ if (!function_exists('if_route')) {
     /**
      * Check if the name of the current route matches one of specific values
      *
-     * @param array $routeNames
+     * @param array|string $routeNames
      *
      * @return bool
      */
-    function if_route(array $routeNames)
+    function if_route($routeNames)
     {
         return app('active')->checkRoute($routeNames);
     }
@@ -81,11 +81,11 @@ if (!function_exists('if_route_pattern')) {
     /**
      * Check the current route name with one or some patterns
      *
-     * @param array $patterns
+     * @param array|string $patterns
      *
      * @return bool
      */
-    function if_route_pattern(array $patterns)
+    function if_route_pattern($patterns)
     {
         return app('active')->checkRoutePattern($patterns);
     }
@@ -110,11 +110,11 @@ if (!function_exists('if_action')) {
     /**
      * Return 'active' class if current route action match one of provided action names
      *
-     * @param array $actions
+     * @param array|string $actions
      *
      * @return bool
      */
-    function if_action(array $actions)
+    function if_action($actions)
     {
         return app('active')->checkAction($actions);
     }
@@ -124,11 +124,11 @@ if (!function_exists('if_controller')) {
     /**
      * Check if the current controller class matches one of specific values
      *
-     * @param array $controllers
+     * @param array|string $controllers
      *
      * @return bool
      */
-    function if_controller(array $controllers)
+    function if_controller($controllers)
     {
         return app('active')->checkController($controllers);
     }
