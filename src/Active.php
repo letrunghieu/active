@@ -2,6 +2,7 @@
 
 namespace HieuLe\Active;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
@@ -250,7 +251,15 @@ class Active
             return false;
         }
 
-        return $this->route->parameter($param) == $value;
+        $paramValue = $this->route->parameter($param);
+
+        // If the parameter value is an instance of Model class, we compare $value with the value of
+        // its primary key.
+        if (is_a($paramValue, Model::class)) {
+            return $paramValue->{$paramValue->getKeyName()} == $value;
+        }
+
+        return $paramValue == $value;
     }
 
     /**

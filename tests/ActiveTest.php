@@ -26,6 +26,10 @@ class ActiveTest extends TestCase
             ]);
             app('router')->get('/', function () {
             });
+            app('router')->bind('model', function ($id) {
+                return new StubModel(['uid' => $id]);
+            });
+            app('router')->get('/model/{model}', '\HieuLe\ActiveTest\Http\DumpController@viewMethod');
         });
     }
 
@@ -118,7 +122,8 @@ class ActiveTest extends TestCase
 
     /**
      * @param Request $request
-     * @param         $controllers
+     * @param
+     *        $controllers
      * @param         $result
      *
      * @dataProvider provideCheckControllerTestData
@@ -376,6 +381,18 @@ class ActiveTest extends TestCase
                 Request::create('/foo/bar/1/view'),
                 'id',
                 '2',
+                false,
+            ],
+            'match a route bound to a model' => [
+                Request::create('/model/100'),
+                'model',
+                '100',
+                true,
+            ],
+            'not match a route bound to another model' => [
+                Request::create('/model/100'),
+                'model',
+                '1',
                 false,
             ],
         ];
