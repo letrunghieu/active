@@ -20,11 +20,11 @@ if (!function_exists('if_uri')) {
     /**
      * Check if the URI of the current request matches one of the specific URIs
      *
-     * @param array $uris
+     * @param array|string $uris
      *
      * @return bool
      */
-    function if_uri(array $uris)
+    function if_uri($uris)
     {
         return app('active')->checkUri($uris);
     }

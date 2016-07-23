@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
  *
  * @package    HieuLe\Active
  * @author     Hieu Le <letrunghieu.cse09@gmail.com>
- * @version    3.0.0
+ * @version    3.2.0
  *
  */
 class Active
@@ -117,17 +117,17 @@ class Active
     /**
      * Check if the URI of the current request matches one of the specific URIs
      *
-     * @param array $uris
+     * @param array|string $uris
      *
      * @return bool
      */
-    public function checkUri(array $uris)
+    public function checkUri($uris)
     {
         if (!$this->request) {
             return false;
         }
 
-        foreach ($uris as $uri) {
+        foreach ((array)$uris as $uri) {
             if ($this->uri == $uri) {
                 return true;
             }
