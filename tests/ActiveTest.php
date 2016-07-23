@@ -15,7 +15,8 @@ class ActiveTest extends TestCase
         parent::setUp();
 
         app('router')->group(['middleware' => ['dump']], function () {
-            app('router')->get('/foo/bar', ['as' => 'foo.bar', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@indexMethod']);
+            app('router')->get('/foo/bar',
+                ['as' => 'foo.bar', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@indexMethod']);
             app('router')->get('/foo/bar/{id}/view',
                 ['as' => 'foo.bar.view', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@viewMethod']);
             app('router')->get('/home', [
@@ -181,13 +182,13 @@ class ActiveTest extends TestCase
     }
 
     /**
-     * @param Request $request
-     * @param array   $uri
-     * @param         $result
+     * @param Request      $request
+     * @param array|string $uri
+     * @param              $result
      *
      * @dataProvider provideCheckUriTestData
      */
-    public function testCheckCurrentUri(Request $request, array $uri, $result)
+    public function testCheckCurrentUri(Request $request, $uri, $result)
     {
         app(HttpKernelContract::class)->handle($request);
 
@@ -292,12 +293,18 @@ class ActiveTest extends TestCase
             ],
             'match the second inputted actions' => [
                 Request::create('/foo/bar'),
-                ['\HieuLe\ActiveTest\Http\DumpController@viewMethod', '\HieuLe\ActiveTest\Http\DumpController@indexMethod'],
+                [
+                    '\HieuLe\ActiveTest\Http\DumpController@viewMethod',
+                    '\HieuLe\ActiveTest\Http\DumpController@indexMethod',
+                ],
                 true,
             ],
             'match no action'                   => [
                 Request::create('/foo/bar'),
-                ['\HieuLe\ActiveTest\Http\DumpController@viewMethod', '\HieuLe\ActiveTest\Http\DumpController@deleteMethod'],
+                [
+                    '\HieuLe\ActiveTest\Http\DumpController@viewMethod',
+                    '\HieuLe\ActiveTest\Http\DumpController@deleteMethod',
+                ],
                 false,
             ],
         ];
@@ -405,7 +412,7 @@ class ActiveTest extends TestCase
         return [
             'match the first inputted uri'  => [
                 Request::create('/foo/bar'),
-                ['foo/bar'],
+                'foo/bar',
                 true,
             ],
             'match the second inputted uri' => [
