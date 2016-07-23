@@ -34,4 +34,6 @@ Append this line to your `aliases` array in `config/app.php`
 'Active' => HieuLe\Active\Facades\Active::class,
 ```
 
-For more details about usage see: [this page](https://www.hieule.info/?p=377)
+## Usage
+
+See: [How to use Active](https://www.hieule.info/?p=377)
