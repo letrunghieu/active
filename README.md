@@ -37,3 +37,9 @@ Append this line to your `aliases` array in `config/app.php`
 ## Usage
 
 See: [How to use Active](https://www.hieule.info/?p=377)
+
+## Changelog:
+
+* v3.2: allows first parameter of `if_*` functions to be string or array
+* v3.1: support both Laravel 5.2.x and 5.1.x
+* v3.0: new API
