@@ -41,6 +41,7 @@ See: [How to use Active](https://www.hieule.info/?p=377)
 
 ## Changelog:
 
+* v3.4: support Laravel 5.4.x
 * v3.3: support Laravel 5.3.x
 * v3.2: allows first parameter of `if_*` functions to be string or array
 * v3.1: support both Laravel 5.2.x and 5.1.x
