@@ -95,9 +95,9 @@ class Active
         if ($route) {
             $this->action = $route->getActionName();
 
-            $actionSegments = Str::parseCallback($this->action, null);
+            $actionSegments   = Str::parseCallback($this->action, null);
             $this->controller = head($actionSegments);
-            $this->method = last($actionSegments);
+            $this->method     = last($actionSegments);
         }
     }
 
@@ -227,6 +227,10 @@ class Active
         }
 
         $routeName = $this->route->getName();
+
+        if ($routeName == null) {
+            return in_array(null, $patterns);
+        }
 
         foreach ((array)$patterns as $p) {
             if (str_is($p, $routeName)) {
