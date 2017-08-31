@@ -2,6 +2,8 @@ sudo: false
 
 language: php
 
+dist: trusty
+
 php:
   - 7.0
   - hhvm
@@ -12,7 +14,7 @@ env:
 before_script:
   - composer self-update
   - composer require laravel/framework:$LARAVEL_VERSION --no-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --prefer-source --no-interaction
 
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
