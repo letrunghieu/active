@@ -34,5 +34,15 @@
     ]
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "extra": {
+    "laravel": {
+      "providers": [
+        "HieuLe\\Active\\ActiveServiceProvider"
+      ],
+      "aliases": {
+        "Active": "HieuLe\\Active\\Facades\\Active"
+      }
+    }
+  }
 }
