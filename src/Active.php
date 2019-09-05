@@ -2,10 +2,10 @@
 
 namespace HieuLe\Active;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Return "active" class for the current route if needed
@@ -25,7 +25,6 @@ use Illuminate\Support\Str;
  */
 class Active
 {
-
     /**
      * Current request
      *
@@ -95,9 +94,9 @@ class Active
         if ($route) {
             $this->action = $route->getActionName();
 
-            $actionSegments   = Str::parseCallback($this->action, null);
+            $actionSegments = Str::parseCallback($this->action, null);
             $this->controller = head($actionSegments);
-            $this->method     = last($actionSegments);
+            $this->method = last($actionSegments);
         }
     }
 
@@ -138,7 +137,7 @@ class Active
     }
 
     /**
-     * Check if the current URI matches one of specific patterns (using `str_is`)
+     * Check if the current URI matches one of specific patterns (using `Str::is`)
      *
      * @param array|string $patterns
      *
@@ -151,7 +150,7 @@ class Active
         }
 
         foreach ((array)$patterns as $p) {
-            if (str_is($p, $this->uri)) {
+            if (Str::is($p, $this->uri)) {
                 return true;
             }
         }
@@ -182,8 +181,10 @@ class Active
         // if the `key` exists in the query string with the correct value
         // OR it exists with any value
         // OR its value is an array that contains the specific value
-        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array($value,
-                    $queryValue))
+        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array(
+            $value,
+            $queryValue
+        ))
         ) {
             return true;
         }
@@ -233,7 +234,7 @@ class Active
         }
 
         foreach ((array)$patterns as $p) {
-            if (str_is($p, $routeName)) {
+            if (Str::is($p, $routeName)) {
                 return true;
             }
         }
@@ -313,7 +314,7 @@ class Active
      */
     public function getMethod()
     {
-        return $this->method ?: "";
+        return $this->method ?: '';
     }
 
     /**
@@ -323,7 +324,7 @@ class Active
      */
     public function getAction()
     {
-        return $this->action ?: "";
+        return $this->action ?: '';
     }
 
     /**
@@ -333,7 +334,6 @@ class Active
      */
     public function getController()
     {
-        return $this->controller ?: "";
+        return $this->controller ?: '';
     }
-
 }

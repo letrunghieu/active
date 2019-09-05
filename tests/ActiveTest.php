@@ -3,24 +3,27 @@
 namespace HieuLe\ActiveTest;
 
 use HieuLe\Active\Active;
-use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 
 class ActiveTest extends TestCase
 {
-
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
         app('router')->group(['middleware' => ['dump']], function () {
-            app('router')->get('/foo/bar',
-                ['as' => 'foo.bar', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@indexMethod']);
-            app('router')->get('/foo/bar/{id}/view',
-                ['as' => 'foo.bar.view', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@viewMethod']);
+            app('router')->get(
+                '/foo/bar',
+                ['as' => 'foo.bar', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@indexMethod']
+            );
+            app('router')->get(
+                '/foo/bar/{id}/view',
+                ['as' => 'foo.bar.view', 'uses' => '\HieuLe\ActiveTest\Http\DumpController@viewMethod']
+            );
             app('router')->get('/home', [
-                'as'   => 'home',
+                'as' => 'home',
                 'uses' => function () {
                 },
             ]);
@@ -249,7 +252,7 @@ class ActiveTest extends TestCase
                 Request::create('/foo/bar'),
                 '\HieuLe\ActiveTest\Http\DumpController@indexMethod',
             ],
-            'action is a closure'           => [
+            'action is a closure' => [
                 Request::create('/home'),
                 'Closure',
             ],
@@ -259,7 +262,7 @@ class ActiveTest extends TestCase
     public function provideGetMethodTestData()
     {
         return [
-            'method is a controller method'                          => [
+            'method is a controller method' => [
                 Request::create('/foo/bar'),
                 'indexMethod',
             ],
@@ -267,7 +270,7 @@ class ActiveTest extends TestCase
                 Request::create('/foo/bar/1/view'),
                 'viewMethod',
             ],
-            'method is a closure'                                    => [
+            'method is a closure' => [
                 Request::create('/home'),
                 '',
             ],
@@ -281,7 +284,7 @@ class ActiveTest extends TestCase
                 Request::create('/foo/bar'),
                 '\HieuLe\ActiveTest\Http\DumpController',
             ],
-            'controller is a closure'           => [
+            'controller is a closure' => [
                 Request::create('/home'),
                 'Closure',
             ],
@@ -291,7 +294,7 @@ class ActiveTest extends TestCase
     public function provideCheckActionTestData()
     {
         return [
-            'match the first inputted actions'  => [
+            'match the first inputted actions' => [
                 Request::create('/foo/bar'),
                 '\HieuLe\ActiveTest\Http\DumpController@indexMethod',
                 true,
@@ -304,7 +307,7 @@ class ActiveTest extends TestCase
                 ],
                 true,
             ],
-            'match no action'                   => [
+            'match no action' => [
                 Request::create('/foo/bar'),
                 [
                     '\HieuLe\ActiveTest\Http\DumpController@viewMethod',
@@ -318,7 +321,7 @@ class ActiveTest extends TestCase
     public function provideCheckControllerTestData()
     {
         return [
-            'match the first inputted controllers'  => [
+            'match the first inputted controllers' => [
                 Request::create('/foo/bar'),
                 '\HieuLe\ActiveTest\Http\DumpController',
                 true,
@@ -328,7 +331,7 @@ class ActiveTest extends TestCase
                 ['Namespace\Child\Controller', '\HieuLe\ActiveTest\Http\DumpController'],
                 true,
             ],
-            'match no controller'                   => [
+            'match no controller' => [
                 Request::create('/foo/bar'),
                 ['Controller', 'Namespace\Child\Controller'],
                 false,
@@ -339,7 +342,7 @@ class ActiveTest extends TestCase
     public function provideCheckRouteTestData()
     {
         return [
-            'match the first inputted route names'  => [
+            'match the first inputted route names' => [
                 Request::create('/foo/bar'),
                 'foo.bar',
                 true,
@@ -349,12 +352,12 @@ class ActiveTest extends TestCase
                 ['foo.bar.view', 'foo.bar'],
                 true,
             ],
-            'match no route name'                   => [
+            'match no route name' => [
                 Request::create('/foo/bar'),
                 ['foo.bar.view', 'foo.bar.delete'],
                 false,
             ],
-            'route with no name'                    => [
+            'route with no name' => [
                 Request::create('/'),
                 ['foo.bar.view', null],
                 true,
@@ -365,13 +368,13 @@ class ActiveTest extends TestCase
     public function provideCheckRouteParameterTestData()
     {
         return [
-            'key value is matched'     => [
+            'key value is matched' => [
                 Request::create('/foo/bar/1/view'),
                 'id',
                 '1',
                 true,
             ],
-            'key does not exist'       => [
+            'key does not exist' => [
                 Request::create('/foo/bar/1/view'),
                 'foo',
                 '1',
@@ -401,7 +404,7 @@ class ActiveTest extends TestCase
     public function provideCheckRoutePatternTestData()
     {
         return [
-            'match the first inputted route patterns'  => [
+            'match the first inputted route patterns' => [
                 Request::create('/foo/bar'),
                 'foo.*',
                 true,
@@ -411,12 +414,12 @@ class ActiveTest extends TestCase
                 ['bar.*', 'foo.*'],
                 true,
             ],
-            'match no route pattern'                   => [
+            'match no route pattern' => [
                 Request::create('/foo/bar'),
                 ['bar.*', 'baz.*'],
                 false,
             ],
-            'route with no name'                       => [
+            'route with no name' => [
                 Request::create('/'),
                 ['foo.*', null],
                 true,
@@ -427,7 +430,7 @@ class ActiveTest extends TestCase
     public function provideCheckUriTestData()
     {
         return [
-            'match the first inputted uri'  => [
+            'match the first inputted uri' => [
                 Request::create('/foo/bar'),
                 'foo/bar',
                 true,
@@ -437,12 +440,12 @@ class ActiveTest extends TestCase
                 ['/foo/bar/view', 'foo/bar'],
                 true,
             ],
-            'match no uri'                  => [
+            'match no uri' => [
                 Request::create('/foo/bar'),
                 ['/foo/bar', '/foo/bar/delete'],
                 false,
             ],
-            'root route'                    => [
+            'root route' => [
                 Request::create('/'),
                 ['/'],
                 true,
@@ -453,31 +456,31 @@ class ActiveTest extends TestCase
     public function provideCheckQueryTestData()
     {
         return [
-            'key value is matched'                                      => [
+            'key value is matched' => [
                 Request::create('/foo/bar', 'GET', ['id' => 1]),
                 'id',
                 '1',
                 true,
             ],
-            'key exists'                                                => [
+            'key exists' => [
                 Request::create('/foo/bar', 'GET', ['id' => 1]),
                 'id',
                 false,
                 true,
             ],
-            'key does not exist'                                        => [
+            'key does not exist' => [
                 Request::create('/foo/bar'),
                 'foo',
                 '1',
                 false,
             ],
-            'key value is not matched'                                  => [
+            'key value is not matched' => [
                 Request::create('/foo/bar', 'GET', ['id' => 1]),
                 'id',
                 '2',
                 false,
             ],
-            'key is an array that contains the input with wrong type'   => [
+            'key is an array that contains the input with wrong type' => [
                 Request::create('/foo/bar', 'GET', ['id' => [1, 2]]),
                 'id',
                 '2',
@@ -489,7 +492,7 @@ class ActiveTest extends TestCase
                 2,
                 true,
             ],
-            'key is an array that does not contain the input'           => [
+            'key is an array that does not contain the input' => [
                 Request::create('/foo/bar', 'GET', ['id' => [1, 2]]),
                 'id',
                 '3',
@@ -501,7 +504,7 @@ class ActiveTest extends TestCase
     public function provideCheckUriPatternTestData()
     {
         return [
-            'match the first inputted uri patterns'  => [
+            'match the first inputted uri patterns' => [
                 Request::create('/foo/bar'),
                 'foo/*',
                 true,
@@ -511,7 +514,7 @@ class ActiveTest extends TestCase
                 ['bar/*', 'foo/*'],
                 true,
             ],
-            'match no uri pattern'                   => [
+            'match no uri pattern' => [
                 Request::create('/foo/bar'),
                 ['bar/*', 'baz/*'],
                 false,
