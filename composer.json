@@ -1,5 +1,5 @@
 {
-  "name": "hieu-le/active",
+  "name": "babonka/active",
   "description": "The helper class for Laravel (4/5) applications to get active class base on current route",
   "keywords": [
     "laravel",
@@ -16,8 +16,8 @@
     }
   ],
   "require": {
-    "php": ">=7.0",
-    "laravel/framework": "^5.5"
+    "php": ">=7.2",
+    "laravel/framework": "^6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
