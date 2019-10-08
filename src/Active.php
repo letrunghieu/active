@@ -181,10 +181,7 @@ class Active
         // if the `key` exists in the query string with the correct value
         // OR it exists with any value
         // OR its value is an array that contains the specific value
-        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array(
-            $value,
-            $queryValue
-        ))
+        if (($queryValue == $value) || ($queryValue !== null && $value === false) || (is_array($queryValue) && in_array($value, $queryValue))
         ) {
             return true;
         }

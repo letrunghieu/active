@@ -1,6 +1,6 @@
 {
   "name": "hieu-le/active",
-  "description": "The helper class for Laravel 6 applications to get active class base on current route",
+  "description": "The helper class for Laravel (4/5/6) applications to get active class base on current route",
   "keywords": [
     "laravel",
     "active",
