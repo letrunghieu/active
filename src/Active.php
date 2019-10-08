@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Active
 {
+
     /**
      * Current request
      *
@@ -109,7 +110,7 @@ class Active
      *
      * @return string
      */
-    public function getClassIf($condition, $activeClass = 'active', $inactiveClass = "")
+    public function getClassIf($condition, $activeClass = 'active', $inactiveClass = '')
     {
         return $condition ? $activeClass : $inactiveClass;
     }
@@ -334,4 +335,5 @@ class Active
     {
         return $this->controller ?: "";
     }
+
 }

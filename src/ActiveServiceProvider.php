@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ActiveServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -44,10 +45,12 @@ class ActiveServiceProvider extends ServiceProvider
         $this->app->singleton(
             'active',
             function ($app) {
+
                 $instance = new Active($app['router']->getCurrentRequest());
 
                 return $instance;
             }
         );
     }
+
 }
