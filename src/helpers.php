@@ -32,7 +32,7 @@ if (!function_exists('if_uri')) {
 
 if (!function_exists('if_uri_pattern')) {
     /**
-     * Check if the current URI matches one of specific patterns (using `str_is`)
+     * Check if the current URI matches one of specific patterns (using `Str::is`)
      *
      * @param array|string $patterns
      *

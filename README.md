@@ -7,12 +7,12 @@ Active for Laravel
 [![Total Downloads](https://poser.pugx.org/hieu-le/active/downloads.svg)](https://packagist.org/packages/hieu-le/active)
 [![License](https://poser.pugx.org/hieu-le/active/license.svg)](https://packagist.org/packages/hieu-le/active)
 
-The helper class for Laravel applications (both L4 and L5) to get active class base on current url.
+The helper class for Laravel applications to get active class base on current url.
 
-This README file is written for the new `3.x` version of this package, which is compatible with the Laravel 5 only.
+This README file is written for the new `4.x` version of this package, which is compatible with the Laravel 6 only.
 
   * If you are using Laravel 4, see the [`1.x` versions](https://github.com/letrunghieu/active/tree/support/1.x).
-  * If you are using Laravel 5 with the legacy `2.x` version of this package, you can give a try with the `3.x` version (whose API is changed totally) or continue with the [`2.x` version](https://github.com/letrunghieu/active/tree/support/2.x).
+  * If you are using Laravel 5, see the [`3.x` versions](https://github.com/letrunghieu/active/tree/support/3.x)
 
 ## Installation
 
@@ -41,6 +41,7 @@ See: [How to use Active](https://www.hieule.info/?p=377)
 
 ## Changelog:
 
+* v4.0: support Laravel 6 and PHPUnit 8
 * v3.5: support Laravel 5.5.x and PHPUnit 6
 * v3.4: support Laravel 5.4.x
 * v3.3: support Laravel 5.3.x

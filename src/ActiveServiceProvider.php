@@ -20,19 +20,11 @@ class ActiveServiceProvider extends ServiceProvider
     {
         // Update the instances each time a request is resolved and a route is matched
         $instance = app('active');
-        if (version_compare(Application::VERSION, '5.2.0', '>=')) {
-            app('router')->matched(
-                function (RouteMatched $event) use ($instance) {
-                    $instance->updateInstances($event->route, $event->request);
-                }
-            );
-        } else {
-            app('router')->matched(
-                function ($route, $request) use ($instance) {
-                    $instance->updateInstances($route, $request);
-                }
-            );
-        }
+        app('router')->matched(
+            function (RouteMatched $event) use ($instance) {
+                $instance->updateInstances($event->route, $event->request);
+            }
+        );
     }
 
     /**
