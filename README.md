@@ -23,18 +23,6 @@ composer require hieu-le/active
 ```
 
 
-Append this line to your `providers` array in `config/app.php`
-
-```php
-HieuLe\Active\ActiveServiceProvider::class,
-```
-
-Append this line to your `aliases` array in `config/app.php`
-
-```php
-'Active' => HieuLe\Active\Facades\Active::class,
-```
-
 ## Usage
 
 See: [How to use Active](https://www.hieule.info/?p=377)
