@@ -37,7 +37,7 @@ Append this line to your `aliases` array in `config/app.php`
 
 ## Usage
 
-See: [How to use Active](https://www.hieule.info/?p=377)
+See: [How to use Active](https://www.hieule.info/products/laravel-active-version-3-released/)
 
 ## Changelog:
 
