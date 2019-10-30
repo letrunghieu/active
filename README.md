@@ -21,7 +21,7 @@ Require this package as your dependencies:
 ```
 composer require hieu-le/active
 ```
-
+> If you are using Laravel 5.5+, you do not need to manually register the ServiceProvider and Alias.
 
 Append this line to your `providers` array in `config/app.php`
 
