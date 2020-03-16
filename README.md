@@ -9,10 +9,14 @@ Active for Laravel
 
 The helper class for Laravel applications to get active class base on current url.
 
-This README file is written for the new `4.x` version of this package, which is compatible with the Laravel 6 only.
+Since version 7.0, the major version of this library will match the major version of Laravel.
 
-  * If you are using Laravel 4, see the [`1.x` versions](https://github.com/letrunghieu/active/tree/support/1.x).
-  * If you are using Laravel 5, see the [`3.x` versions](https://github.com/letrunghieu/active/tree/support/3.x)
+| Laravel version | Active library version  |
+| --------------- | ----------------------- |
+| 7.x             | 7.x                     |
+| 6.x             | 4.x                     |
+| 5.x             | 3.x                     |
+| 4.x             | 1.x                     |
 
 ## Installation
 
@@ -37,10 +41,11 @@ Append this line to your `aliases` array in `config/app.php`
 
 ## Usage
 
-See: [How to use Active](https://www.hieule.info/products/laravel-active-version-3-released/)
+See: [How to use Active](https://www.hieule.info/tag/laravel-active/)
 
 ## Changelog:
 
+* v7.0: support Laravel 7 and start using the same marjor version with Laravel
 * v4.0: support Laravel 6 and PHPUnit 8
 * v3.5: support Laravel 5.5.x and PHPUnit 6
 * v3.4: support Laravel 5.4.x
