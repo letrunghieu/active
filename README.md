@@ -7,6 +7,9 @@ Active for Laravel
 [![Total Downloads](https://poser.pugx.org/hieu-le/active/downloads.svg)](https://packagist.org/packages/hieu-le/active)
 [![License](https://poser.pugx.org/hieu-le/active/license.svg)](https://packagist.org/packages/hieu-le/active)
 
+> [!CAUTION]
+> **This repository is not maintained any more. Please feel free to fork it and make it compatible to new versions of Laravel.**
+
 The helper class for Laravel applications to get active class base on current url.
 
 Since version 7.0, the major version of this library will match the major version of Laravel.
