@@ -218,7 +218,7 @@ class Active
      *
      * @return bool
      */
-    public function checkRoutePattern($patterns)
+    public function checkRoutePattern($patterns): bool
     {
         if (!$this->route) {
             return false;
@@ -227,7 +227,7 @@ class Active
         $routeName = $this->route->getName();
 
         if ($routeName == null) {
-            return in_array(null, $patterns);
+            return in_array(null, (array) $patterns);
         }
 
         foreach ((array)$patterns as $p) {

@@ -421,6 +421,11 @@ class ActiveTest extends TestCase
                 ['foo.*', null],
                 true,
             ],
+            'route with no name and single pattern'    => [
+                Request::create('/'),
+                'foo.*',
+                false,
+            ],
         ];
     }
 
